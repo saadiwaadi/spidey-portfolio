@@ -50,12 +50,79 @@
     }
 
     .device-bezel {
-      background: var(--teal);
-      padding: 14px; /* this replaces the old body border thickness */
+      background: transparent;
+      padding: 22px; /* matches visual overlay thickness */
       min-height: 100vh;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
+    }
+
+    /* ============ FIXED VISUAL BEZEL OVERLAY ============ */
+    .device-frame-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10000; /* floats above everything */
+      border: 22px solid #5eb8df; /* Outer shell color */
+      box-shadow:
+        0 0 40px rgba(0, 0, 0, 0.35),                    /* Soft drop shadow on background */
+        inset 0 3px rgba(255, 255, 255, 0.25),           /* Visual depth highlight */
+        inset 0 -3px rgba(0, 0, 0, 0.35),                /* Visual depth shadow */
+        inset 0 2px 0 #9ce8ff,                           /* Outer highlight */
+        inset 0 -2px 0 #2c7399,                          /* Plastic edge */
+        inset 0 0 0 4px #1d4260;                         /* Dark groove */
+    }
+
+    /* Hardware seams on the overlay */
+    .device-frame-overlay::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #2c7399;
+      border-bottom: 1px solid #9ce8ff;
+      opacity: 0.6;
+    }
+
+    .device-frame-overlay::after {
+      content: "";
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #2c7399;
+      border-bottom: 1px solid #9ce8ff;
+      opacity: 0.6;
+    }
+
+    /* Screws on the overlay */
+    .bezel-screw {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #15324b;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 0 rgba(255, 255, 255, 0.1);
+      z-index: 10;
+    }
+
+    .screw-tl { top: 8px; left: 8px; }
+    .screw-tr { top: 8px; right: 8px; }
+    .screw-bl { bottom: 8px; left: 8px; }
+    .screw-br { bottom: 8px; right: 8px; }
+
+    /* Screen Glass reflection overlay */
+    .screen-glass {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 997;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 50%);
+      opacity: .06;
     }
 
     .device-screen-container {
@@ -1184,20 +1251,31 @@
       }
     }
 
-    /* ============ GBC CONSOLE (mobile nav/scroll) ============ */
-    .gbc-console {
-      position: sticky;
+    /* ============ GAMEBOY CONSOLE (mobile nav/scroll) ============ */
+    .gameboy-console {
+      position: fixed;
+      bottom: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      z-index: 60;
-      background: var(--bg-panel);
-      border-top: var(--px) solid var(--border);
-      box-shadow: 0 -4px 0 0 var(--bg-inset);
-      padding: 14px 18px calc(10px + env(safe-area-inset-bottom));
+      height: 160px;
+      background: var(--bg-panel);     /* Navy plastic color */
+      border-top: 4px solid var(--border); /* Thick outline separating screen */
+      padding: 14px 18px 10px;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      z-index: 9999;                   /* Keeps it above all scrolling content */
+    }
+
+    /* The shadow ledge that creates the recessed screen illusion */
+    .console-bezel-edge {
+      position: absolute;
+      top: -4px;                       /* Pulls it up exactly over the border */
+      left: 0;
+      right: 0;
+      height: 4px;
+      box-shadow: 0 -8px 12px rgba(0, 0, 0, 0.4); /* Casts shadow UPWARDS onto the scrolling screen */
+      pointer-events: none;
     }
 
     .gbc-bezel {
@@ -1207,20 +1285,21 @@
       background: var(--bg-inset);
       border: 3px solid var(--border);
       border-radius: 12px;
-      padding: 10px 16px;
+      padding: 14px 20px; /* Slightly increased padding */
       box-shadow: inset 0 0 10px rgba(0, 0, 0, .6);
     }
 
+    /* --- D-PAD --- */
     .dpad-housing {
       position: relative;
-      width: 86px;
-      height: 86px;
+      width: 100px;  /* Decreased from 116px */
+      height: 100px; /* Decreased from 116px */
       background: var(--bg-inset);
       clip-path: polygon(
         34% 0%, 66% 0%, 66% 34%, 100% 34%, 100% 66%,
         66% 66%, 66% 100%, 34% 100%, 34% 66%, 0% 66%, 0% 34%, 34% 34%
-      ); /* plus/cross silhouette */
-      box-shadow: inset 0 0 6px rgba(0,0,0,.6), 0 2px 0 rgba(255,255,255,.05);
+      );
+      box-shadow: inset 0 0 8px rgba(0,0,0,.6), 0 2px 0 rgba(255,255,255,.05);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1228,12 +1307,12 @@
 
     .dpad {
       display: grid;
-      grid-template-columns: 26px 26px 26px;
-      grid-template-rows: 26px 26px 26px;
+      grid-template-columns: 30px 30px 30px; /* Decreased from 35px */
+      grid-template-rows: 30px 30px 30px;    /* Decreased from 35px */
     }
 
     .dpad button {
-      background: #302a44;
+      background: var(--bg-panel-2);
       border: 2px solid var(--border);
       display: flex;
       align-items: center;
@@ -1243,7 +1322,7 @@
       padding: 0;
       box-shadow: inset 0 2px 0 rgba(255, 255, 255, .08);
       transition: background 80ms ease, transform 80ms ease;
-      font-size: 11px;
+      font-size: 13px; /* Decreased from 15px */
     }
 
     .dpad button:active {
@@ -1252,24 +1331,16 @@
       transform: scale(.94);
     }
 
-    .dpad-up {
-      grid-column: 2;
-      grid-row: 1;
-      border-radius: 4px 4px 0 0;
-      border-bottom: none;
-    }
-
-    .dpad-left {
-      grid-column: 1;
-      grid-row: 2;
-      border-radius: 4px 0 0 4px;
-      border-right: none;
-    }
+    /* D-Pad border radiuses remain the same */
+    .dpad-up { grid-column: 2; grid-row: 1; border-radius: 4px 4px 0 0; border-bottom: none; }
+    .dpad-left { grid-column: 1; grid-row: 2; border-radius: 4px 0 0 4px; border-right: none; }
+    .dpad-right { grid-column: 3; grid-row: 2; border-radius: 0 4px 4px 0; border-left: none; }
+    .dpad-down { grid-column: 2; grid-row: 3; border-radius: 0 0 4px 4px; border-top: none; }
 
     .dpad-hub {
       grid-column: 2;
       grid-row: 2;
-      background: #302a44;
+      background: var(--bg-panel-2);
       border: 2px solid var(--border);
       display: flex;
       align-items: center;
@@ -1277,29 +1348,16 @@
     }
 
     .dpad-hub .dot {
-      width: 4px;
-      height: 4px;
+      width: 5px;  /* Decreased from 6px */
+      height: 5px; /* Decreased from 6px */
       border-radius: 50%;
-      background: #0c0916;
+      background: var(--bg-inset);
     }
 
-    .dpad-right {
-      grid-column: 3;
-      grid-row: 2;
-      border-radius: 0 4px 4px 0;
-      border-left: none;
-    }
-
-    .dpad-down {
-      grid-column: 2;
-      grid-row: 3;
-      border-radius: 0 0 4px 4px;
-      border-top: none;
-    }
-
+    /* --- START / SELECT --- */
     .ss-group {
       display: flex;
-      gap: 14px;
+      gap: 18px; /* Increased from 14px */
       align-items: center;
     }
 
@@ -1307,13 +1365,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 6px; /* Slightly more gap below pill */
     }
 
     .ss-pill {
-      width: 30px;
-      height: 9px;
-      border-radius: 8px;
+      width: 40px;  /* Increased from 30px */
+      height: 12px; /* Increased from 9px */
+      border-radius: 10px;
       background: #4b4460;
       border: 2px solid var(--border);
       transform: rotate(-25deg);
@@ -1329,13 +1387,14 @@
 
     .ss-lbl {
       font-family: var(--font-pixel);
-      font-size: 8px;
+      font-size: 10px; /* Increased from 8px */
       color: var(--text-dim);
     }
 
+    /* --- A / B BUTTONS (PLAYER / PROJECTS) --- */
     .ab-group {
       display: flex;
-      gap: 10px;
+      gap: 16px; /* Increased from 10px */
       transform: rotate(-15deg);
     }
 
@@ -1343,35 +1402,30 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
     }
 
     .ab-btn {
-      width: 34px;
-      height: 34px;
+      width: 46px;  /* Increased from 34px */
+      height: 46px; /* Increased from 34px */
       border-radius: 50%;
       border: 2px solid var(--border);
       cursor: pointer;
-      box-shadow: 0 3px 0 var(--bg-inset);
+      box-shadow: 0 4px 0 var(--bg-inset); /* Slightly deeper shadow */
       transition: transform 80ms ease, box-shadow 80ms ease;
     }
 
     .ab-btn:active {
-      transform: translateY(2px);
+      transform: translateY(3px);
       box-shadow: 0 1px 0 var(--bg-inset);
     }
 
-    .ab-b {
-      background: var(--red);
-    }
-
-    .ab-a {
-      background: var(--teal);
-    }
+    .ab-b { background: var(--red); }
+    .ab-a { background: var(--teal); }
 
     .ab-lbl {
       font-family: var(--font-pixel);
-      font-size: 9px;
+      font-size: 12px; /* Increased from 9px */
       color: var(--text-dim);
       transform: rotate(15deg);
     }
@@ -1411,12 +1465,16 @@
         display: none !important;
       }
 
-      .gbc-console {
+      .gameboy-console {
         display: flex;
       }
 
       .console-labels {
         display: none !important;
+      }
+
+      .device-frame-overlay {
+        bottom: 160px;
       }
 
       :root {
@@ -1447,7 +1505,7 @@
         display: flex;
       }
 
-      .gbc-console {
+      .gameboy-console {
         display: none !important;
       }
 
@@ -1462,7 +1520,7 @@
 
     @media (max-width:880px) {
       body {
-        padding-bottom: 0;
+        padding-bottom: 160px;
       }
     }
 
@@ -1608,9 +1666,9 @@
       .ticker-console {
         display: none; /* hidden by default, shown only above 880px */
         position: sticky;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        left: 22px;
+        right: 22px;
+        bottom: 22px;
         z-index: 60;
         background: var(--bg-panel);
         border-top: var(--px) solid var(--border);
@@ -1693,10 +1751,19 @@
 </head>
 
 <body>
+  <!-- Fixed visual bezel overlay -->
+  <div class="device-frame-overlay">
+    <div class="bezel-screw screw-tl"></div>
+    <div class="bezel-screw screw-tr"></div>
+    <div class="bezel-screw screw-bl"></div>
+    <div class="bezel-screw screw-br"></div>
+  </div>
+
   <div class="device-bezel">
     <div class="device-screen-container">
       <div class="crt-overlay"></div>
       <div class="vignette"></div>
+      <div class="screen-glass"></div>
 
       <div class="device-screen">
         <!-- ================= TOP HEADER (desktop) ================= -->
@@ -2425,16 +2492,23 @@
     © 2026 SAAD AHMAD — ALL RIGHTS RESERVED <span class="save-blip">■</span> PRESS START TO SCROLL UP
   </footer>
 
-  <!-- ================= GBC CONSOLE (mobile) ================= -->
-  <nav class="gbc-console" aria-label="Console navigation">
+      </div> <!-- device-screen -->
+    </div> <!-- device-screen-container -->
+  </div> <!-- device-bezel -->
+
+  <!-- ================= GAMEBOY CONSOLE (mobile) ================= -->
+  <div class="gameboy-console" aria-label="Console navigation">
+    <!-- The physical plastic edge separating screen from controls -->
+    <div class="console-bezel-edge"></div>
+
     <div class="gbc-bezel">
       <div class="dpad-housing">
         <div class="dpad">
           <button class="dpad-up" data-scroll="up" aria-label="Scroll up">▲</button>
-          <div class="dpad-hub"><span class="dot"></span></div>
-          <button class="dpad-down" data-scroll="down" aria-label="Scroll down">▼</button>
           <button class="dpad-left" data-jump="hero" aria-label="Go to top">◀</button>
+          <div class="dpad-hub"><span class="dot"></span></div>
           <button class="dpad-right" data-jump="contact" aria-label="Go to end">▶</button>
+          <button class="dpad-down" data-scroll="down" aria-label="Scroll down">▼</button>
         </div>
       </div>
 
@@ -2462,7 +2536,7 @@
       <a href="#side-quests" data-section="side-quests">SIDE QUESTS</a>
       <a href="#contact" data-section="contact">CONTACT</a>
     </div>
-  </nav>
+  </div> <!-- gameboy-console -->
 
   <div class="ticker-console" aria-label="Desktop console navigation">
     <div class="ticker-bezel">
@@ -2472,10 +2546,6 @@
       <div class="ticker-mute" role="button" aria-label="Toggle sound">🔊</div>
     </div>
   </div>
-
-      </div> <!-- device-screen -->
-    </div> <!-- device-screen-container -->
-  </div> <!-- device-bezel -->
 
   <script>
     // Hero Name Typing Animation
@@ -2639,22 +2709,137 @@
     }
 
     // Case Study Modal Logic
-    var params = new URLSearchParams(window.location.search);
-    var projectSlug = params.get('project');
-    if (projectSlug) {
-      var cartridge = document.querySelector('.cartridge[data-project-id="' + projectSlug + '"]');
-      if (cartridge) {
-        var title = cartridge.querySelector('.cart-top h3').textContent;
-        var drawer = cartridge.querySelector('.case-study-drawer');
-        if (drawer) {
-          var modal = document.getElementById('case-study-modal');
-          var modalTitle = document.getElementById('modal-title-text');
-          var modalBody = document.getElementById('modal-body-content');
+    function renderProjects(projectsList) {
+      const container = document.querySelector('.cart-grid');
+      if (!container) return;
 
-          modalTitle.textContent = title.toUpperCase() + ' — CASE STUDY';
-          modalBody.innerHTML = drawer.innerHTML;
-          modal.classList.add('is-visible');
+      const tagClasses = {
+        'LIVE': 'cart-tag--live',
+        'RUNNING': 'cart-tag--run',
+        'SHIPPED': 'cart-tag--ship',
+        'PERSONAL': 'cart-tag--solo',
+        'DESIGN': 'cart-tag--design'
+      };
+
+      const formatListItems = (list) => {
+        if (!list) return '';
+        const array = Array.isArray(list) ? list : (typeof list === 'string' ? JSON.parse(list) : []);
+        return array.map(item => {
+          const colonIndex = item.indexOf(':');
+          if (colonIndex !== -1) {
+            const boldPart = item.substring(0, colonIndex);
+            const restPart = item.substring(colonIndex + 1);
+            return `<li><strong>${boldPart}:</strong>${restPart}</li>`;
+          }
+          return `<li>${item}</li>`;
+        }).join('');
+      };
+
+      const parseJsonArray = (val) => {
+        if (Array.isArray(val)) return val;
+        if (typeof val === 'string') {
+          try {
+            return JSON.parse(val);
+          } catch (e) {
+            return [];
+          }
         }
+        return [];
+      };
+
+      container.innerHTML = projectsList.map(project => {
+        const slug = project.title.toLowerCase().replace(/[\s_]+/g, '-').replace(/[^a-z0-9-]/g, '');
+        const tagClass = tagClasses[project.status.toUpperCase()] || 'cart-tag--live';
+        const parsedTags = parseJsonArray(project.tags);
+
+        return `
+          <article class="cartridge" data-project-id="${slug}">
+            <div class="cart-top">
+              <h3>${project.title}</h3>
+              <span class="cart-tag ${tagClass}">${project.status.toUpperCase()}</span>
+            </div>
+            <p>${project.description}</p>
+            <div class="chip-row">
+              ${parsedTags.map(t => `<span class="chip">${t}</span>`).join('')}
+            </div>
+            <a href="index.html?project=${slug}" target="_blank"
+              class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶
+              VIEW CASE STUDY</a>
+            <div class="case-study-drawer">
+              <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PROJECT OVERVIEW</div>
+                <p class="dev-log-p">${project.overview || ''}</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
+                <ul class="dev-log-list">
+                  ${formatListItems(project.architecture)}
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNOLOGY STACK</div>
+                <p class="dev-log-p">${project.tech_stack || ''}</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">KEY FEATURES</div>
+                <ul class="dev-log-list">
+                  ${formatListItems(project.features)}
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
+                <p class="dev-log-p">${project.challenges || ''}</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">DESIGN DECISIONS</div>
+                <p class="dev-log-p">${project.decisions || ''}</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
+                <p class="dev-log-p">${project.performance || ''}</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">WHAT I LEARNED</div>
+                <p class="dev-log-p">${project.learnings || ''}</p>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      cartridges = document.querySelectorAll('.cartridge');
+
+      const params = new URLSearchParams(window.location.search);
+      const projectSlug = params.get('project');
+      if (projectSlug) {
+        const cartridge = document.querySelector(`.cartridge[data-project-id="${projectSlug}"]`);
+        if (cartridge) {
+          const title = cartridge.querySelector('.cart-top h3').textContent;
+          const drawer = cartridge.querySelector('.case-study-drawer');
+          if (drawer) {
+            const modal = document.getElementById('case-study-modal');
+            const modalTitle = document.getElementById('modal-title-text');
+            const modalBody = document.getElementById('modal-body-content');
+
+            modalTitle.textContent = title.toUpperCase() + ' — CASE STUDY';
+            modalBody.innerHTML = drawer.innerHTML;
+            modal.classList.add('is-visible');
+          }
+        }
+      }
+    }
+
+    async function loadProjects() {
+      const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+        ? 'http://localhost:5000/api' 
+        : '/api';
+      try {
+        const res = await fetch(`${API_BASE}/projects`);
+        const projects = await res.json();
+        renderProjects(projects);
+      } catch (err) {
+        console.error('Failed to fetch projects from API:', err);
       }
     }
 
@@ -2770,6 +2955,9 @@
       }
       document.body.removeChild(textArea);
     }
+
+    // Load projects dynamically on boot
+    loadProjects();
   </script>
 </body>
 

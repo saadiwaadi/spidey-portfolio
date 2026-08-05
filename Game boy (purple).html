@@ -1561,21 +1561,136 @@
       history.pushState({}, "", currentUrl.pathname + currentUrl.search);
     }
 
-    document.querySelectorAll('.toggle-case-study').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        var parent = this.closest('.cartridge');
-        if (parent) {
-          var projectSlug = parent.getAttribute('data-project-id');
-          openCaseStudyModal(projectSlug);
-        }
-      });
-    });
+    function renderProjects(projectsList) {
+      const container = document.querySelector('.cart-grid');
+      if (!container) return;
 
-    var params = new URLSearchParams(window.location.search);
-    var initialProject = params.get('project');
-    if (initialProject) {
-      openCaseStudyModal(initialProject);
+      const tagClasses = {
+        'LIVE': 'cart-tag--live',
+        'RUNNING': 'cart-tag--run',
+        'SHIPPED': 'cart-tag--ship',
+        'PERSONAL': 'cart-tag--solo',
+        'DESIGN': 'cart-tag--design'
+      };
+
+      const formatListItems = (list) => {
+        if (!list) return '';
+        const array = Array.isArray(list) ? list : (typeof list === 'string' ? JSON.parse(list) : []);
+        return array.map(item => {
+          const colonIndex = item.indexOf(':');
+          if (colonIndex !== -1) {
+            const boldPart = item.substring(0, colonIndex);
+            const restPart = item.substring(colonIndex + 1);
+            return `<li><strong>${boldPart}:</strong>${restPart}</li>`;
+          }
+          return `<li>${item}</li>`;
+        }).join('');
+      };
+
+      const parseJsonArray = (val) => {
+        if (Array.isArray(val)) return val;
+        if (typeof val === 'string') {
+          try {
+            return JSON.parse(val);
+          } catch (e) {
+            return [];
+          }
+        }
+        return [];
+      };
+
+      container.innerHTML = projectsList.map(project => {
+        const slug = project.title.toLowerCase().replace(/[\s_]+/g, '-').replace(/[^a-z0-9-]/g, '');
+        const tagClass = tagClasses[project.status.toUpperCase()] || 'cart-tag--live';
+        const parsedTags = parseJsonArray(project.tags);
+
+        return `
+          <article class="cartridge" data-project-id="${slug}">
+            <div class="cart-top">
+              <h3>${project.title}</h3>
+              <span class="cart-tag ${tagClass}">${project.status.toUpperCase()}</span>
+            </div>
+            <p>${project.description}</p>
+            <div class="chip-row">
+              ${parsedTags.map(t => `<span class="chip">${t}</span>`).join('')}
+            </div>
+            <a href="?project=${slug}"
+              class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶
+              VIEW CASE STUDY</a>
+            <div class="case-study-drawer">
+              <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PROJECT OVERVIEW</div>
+                <p class="dev-log-p">${project.overview || ''}</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
+                <ul class="dev-log-list">
+                  ${formatListItems(project.architecture)}
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNOLOGY STACK</div>
+                <p class="dev-log-p">${project.tech_stack || ''}</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">KEY FEATURES</div>
+                <ul class="dev-log-list">
+                  ${formatListItems(project.features)}
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
+                <p class="dev-log-p">${project.challenges || ''}</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">DESIGN DECISIONS</div>
+                <p class="dev-log-p">${project.decisions || ''}</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
+                <p class="dev-log-p">${project.performance || ''}</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">WHAT I LEARNED</div>
+                <p class="dev-log-p">${project.learnings || ''}</p>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      cartridges = document.querySelectorAll('.cartridge');
+
+      document.querySelectorAll('.toggle-case-study').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var parent = this.closest('.cartridge');
+          if (parent) {
+            var projectSlug = parent.getAttribute('data-project-id');
+            openCaseStudyModal(projectSlug);
+          }
+        });
+      });
+
+      var params = new URLSearchParams(window.location.search);
+      var initialProject = params.get('project');
+      if (initialProject) {
+        openCaseStudyModal(initialProject);
+      }
+    }
+
+    async function loadProjects() {
+      const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+        ? 'http://localhost:5000/api' 
+        : '/api';
+      try {
+        const res = await fetch(`${API_BASE}/projects`);
+        const projects = await res.json();
+        renderProjects(projects);
+      } catch (err) {
+        console.error('Failed to fetch projects from API:', err);
+      }
     }
 
     window.addEventListener('popstate', function(e) {
@@ -1704,6 +1819,9 @@
       }
       document.body.removeChild(textArea);
     }
+
+    // Load projects dynamically on boot
+    loadProjects();
   </script>
 </body>
 </html>
