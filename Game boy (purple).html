@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SAAD AHMAD — Full-Stack Developer &amp; Founder</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%232b1c4e'/%3E%3Crect x='2' y='2' width='12' height='12' fill='%23ffcc33'/%3E%3Crect x='4' y='4' width='3' height='3' fill='%232b1c4e'/%3E%3Crect x='9' y='4' width='3' height='3' fill='%232b1c4e'/%3E%3Crect x='5' y='9' width='6' height='2' fill='%23ff3b6b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:            #100a1f;
+    --bg-panel:      #1c1236;
+    --bg-panel-2:    #251a45;
+    --bg-inset:      #08050f;
+    --text:          #f1eee6;
+    --text-dim:      #8d84ab;
+    --yellow:        #ffcc33;
+    --teal:          #3ef2c9;
+    --red:           #ff3b6b;
+    --green:         #8be28f;
+    --border:        #3b2a63;
+    --border-soft:   #4c3980;
+    --px:            4px;
+    --font-pixel:    'Press Start 2P', monospace;
+    --font-mono:     'VT323', monospace;
+    --header-h:      68px;
+    --console-h:     172px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-mono);
+    font-size:19px;
+    line-height:1.5;
+    -webkit-font-smoothing:none;
+  }
+
+  ::selection{ background:var(--yellow); color:var(--bg-inset); }
+
+  a{ color:inherit; }
+
+  img,svg{ image-rendering:pixelated; }
+
+  /* ============ SCANLINES / CRT ============ */
+  .crt-overlay{
+    position:fixed; inset:0; pointer-events:none; z-index:999;
+    background:
+      linear-gradient(rgba(8,5,15,0) 50%, rgba(0,0,0,.22) 50%),
+      linear-gradient(90deg, rgba(255,0,60,.03), rgba(0,255,150,.02), rgba(0,120,255,.03));
+    background-size:100% 4px, 3px 100%;
+    opacity:.45;
+  }
+  .vignette{
+    position:fixed; inset:0; pointer-events:none; z-index:998;
+    box-shadow: inset 0 0 112px rgba(0,0,0,.45);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  /* ============ FOCUS STATE ============ */
+  a:focus-visible, button:focus-visible{
+    outline:3px solid var(--yellow);
+    outline-offset:2px;
+  }
+
+  /* ============ TYPE ============ */
+  h1,h2,h3{ font-family:var(--font-pixel); margin:0; }
+  .eyebrow{
+    font-family:var(--font-pixel);
+    font-size:10px;
+    letter-spacing:1px;
+    color:var(--yellow);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{ content:"▸"; color:var(--teal); }
+  .section-title{
+    font-size:clamp(16px,3.4vw,24px);
+    color:var(--text);
+    text-shadow:3px 3px 0 var(--bg-inset);
+    margin-bottom:28px;
+    letter-spacing:.5px;
+  }
+
+  /* ============ LAYOUT SHELL ============ */
+  .wrap{
+    max-width:1000px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  section{ scroll-margin-top:calc(var(--header-h) + 24px); }
+
+  /* ============ TOP HEADER (desktop nav) ============ */
+  .top-header{
+    display:none;
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    height:var(--header-h);
+    background:var(--bg-panel);
+    border-bottom:var(--px) solid var(--border);
+    box-shadow:0 var(--px) 0 0 var(--bg-inset);
+    align-items:center;
+  }
+  .top-header .wrap{ display:flex; align-items:center; justify-content:space-between; width:100%; }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-mark{ width:26px; height:26px; flex:0 0 auto; }
+  .brand-text{
+    font-family:var(--font-pixel);
+    font-size:12px;
+    color:var(--text);
+    text-shadow:2px 2px 0 var(--bg-inset);
+    white-space:nowrap;
+  }
+  .brand-text .blip{
+    display:inline-block; width:8px; height:14px; background:var(--yellow);
+    margin-left:4px; vertical-align:-2px;
+    animation:blink 1s step-end infinite;
+  }
+
+  .top-nav{ display:flex; align-items:center; gap:4px; }
+  .top-nav a{
+    font-family:var(--font-pixel);
+    font-size:9px;
+    letter-spacing:.5px;
+    text-decoration:none;
+    color:var(--text-dim);
+    padding:10px 12px;
+    border:2px solid transparent;
+    transition:color 100ms ease, border-color 100ms ease;
+  }
+  .top-nav a::before{ content:"  "; }
+  .top-nav a.is-active::before{ content:"▶ "; color:var(--yellow); }
+  .top-nav a:hover, .top-nav a.is-active{
+    color:var(--yellow);
+    border-color:var(--border-soft);
+    background:var(--bg-panel-2);
+  }
+
+  .header-status{
+    display:flex; align-items:center; gap:6px;
+    font-family:var(--font-pixel); font-size:8px; color:var(--green);
+    margin-left:12px;
+  }
+  .header-status .dot{
+    width:6px; height:6px; background:var(--green); border-radius:50%;
+    box-shadow:0 0 6px var(--green);
+    animation:blink 1.4s step-end infinite;
+  }
+
+  @keyframes blink{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+
+  /* ============ BUTTONS ============ */
+  .pixel-btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    font-family:var(--font-pixel);
+    font-size:10px;
+    text-transform:uppercase;
+    text-decoration:none;
+    background:var(--bg-panel-2);
+    color:var(--text);
+    border:2px solid var(--border);
+    padding:14px 18px;
+    cursor:pointer;
+    box-shadow:0 4px 0 0 var(--bg-inset);
+    transition:transform 60ms steps(2), box-shadow 60ms steps(2);
+  }
+  .pixel-btn:active{ transform:translateY(4px); box-shadow:none; }
+  .pixel-btn--yellow{ background:var(--yellow); color:var(--bg-inset); border-color:#c99400; }
+  .pixel-btn--teal{ background:var(--teal); color:var(--bg-inset); border-color:#12b697; }
+  .pixel-btn--ghost{ background:transparent; }
+  .pixel-btn--sm{ font-size:8px; padding:8px 12px; box-shadow:0 3px 0 0 var(--bg-inset); }
+  .pixel-btn--sm:active{ transform:translateY(3px); }
+
+  /* ============ PANELS ============ */
+  .panel{
+    background:var(--bg-panel);
+    border:var(--px) solid var(--border);
+    box-shadow:
+      0 var(--px) 0 0 var(--bg-inset),
+      0 calc(var(--px) * -1) 0 0 var(--bg-inset),
+      var(--px) 0 0 0 var(--bg-inset),
+      calc(var(--px) * -1) 0 0 0 var(--bg-inset);
+    padding:24px;
+    position:relative;
+  }
+  .panel--raised{ background:var(--bg-panel-2); }
+
+  /* ============ HERO ============ */
+  .hero{
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:calc(var(--console-h) + 48px) 0 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-grid-bg{
+    position:absolute; inset:0; z-index:0; opacity:.5;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size:28px 28px;
+    -webkit-mask-image:radial-gradient(ellipse at 50% 30%, black 0%, transparent 68%);
+            mask-image:radial-gradient(ellipse at 50% 30%, black 0%, transparent 68%);
+  }
+  .hero .wrap{ position:relative; z-index:1; }
+
+  .hero-kicker{
+    font-family:var(--font-pixel);
+    font-size:10px;
+    color:var(--text-dim);
+    margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .hero-kicker .console-dot{
+    width:8px;height:8px;background:var(--red);border-radius:50%;
+    box-shadow:0 0 8px var(--red);
+    animation:blink 1.2s step-end infinite;
+  }
+
+  .hero-title{
+    font-size:clamp(28px, 8vw, 54px);
+    line-height:1.25;
+    text-shadow:4px 4px 0 var(--bg-inset);
+    margin-bottom:18px;
+  }
+  .hero-title .cursor{
+    display:inline-block; width:.5em; height:.9em;
+    background:var(--yellow);
+    margin-left:6px; vertical-align:-8px;
+    animation:blink .9s step-end infinite;
+  }
+
+  .hero-role{
+    font-family:var(--font-mono);
+    font-size:24px;
+    color:var(--teal);
+    margin-bottom:20px;
+  }
+
+  .hero-copy{
+    max-width:52ch;
+    color:var(--text-dim);
+    font-size:19px;
+    margin-bottom:32px;
+  }
+
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:40px; }
+
+  .hero-hud{
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .hud-chip{
+    font-family:var(--font-pixel);
+    font-size:9px;
+    letter-spacing:.5px;
+    color:var(--bg-inset);
+    background:var(--text-dim);
+    padding:8px 10px;
+    border:2px solid var(--border);
+  }
+  .hud-chip--yellow{ background:var(--yellow); }
+  .hud-chip--teal{ background:var(--teal); }
+  .hud-chip--red{ background:var(--red); color:var(--text); }
+
+  .scroll-cue{
+    position:absolute; bottom:24px; left:0; right:0;
+    display:flex; justify-content:center;
+    font-family:var(--font-pixel); font-size:9px; color:var(--text-dim);
+    animation:bob 1.6s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(6px); } }
+
+  /* ============ GENERIC SECTION SPACING ============ */
+  .section{ padding:92px 0; }
+  .section:nth-of-type(even){ background:linear-gradient(var(--bg), var(--bg-panel) 1200%); }
+
+  /* ============ PROFILE ============ */
+  #profile{ background:var(--bg) !important; }
+  .profile-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+  @media (min-width:760px){
+    .profile-grid{ grid-template-columns:1.5fr 1fr; align-items:start; }
+  }
+  .profile-copy p{ color:var(--text); margin:0 0 16px; }
+  .profile-copy p:last-child{ margin-bottom:0; }
+  .profile-copy strong{ color:var(--yellow); }
+
+  .facts-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px; }
+  .facts-list li{ display:flex; justify-content:space-between; gap:12px; border-bottom:1px dashed var(--border-soft); padding-bottom:12px; font-size:17px; }
+  .facts-list li:last-child{ border-bottom:none; padding-bottom:0; }
+  .facts-list .k{ font-family:var(--font-pixel); font-size:9.5px; color:var(--text-dim); letter-spacing:.5px; align-self:center; }
+  .facts-list .v{ text-align:right; }
+  .facts-list a.v{ color:var(--teal); text-decoration:none; }
+  .facts-list a.v:hover{ text-decoration:underline; }
+
+  /* ============ STAT CARD ============ */
+  .card-frame{ display:flex; justify-content:center; }
+  .stat-card{
+    width:100%;
+    max-width:420px;
+    background:linear-gradient(180deg, #3a2a12, #1c1236 40%);
+    border:var(--px) solid var(--yellow);
+    box-shadow:
+      0 0 0 2px var(--bg-inset),
+      0 8px 0 0 var(--bg-inset),
+      0 0 26px rgba(255,204,51,.18);
+    padding:22px;
+    position:relative;
+  }
+  .stat-card-top{ display:flex; align-items:center; justify-content:space-between; margin:12px 0 18px; }
+  .stat-ovr{ display:flex; flex-direction:column; align-items:center; line-height:1; }
+  .stat-ovr .num{ font-family:var(--font-pixel); font-size:34px; color:var(--yellow); text-shadow:3px 3px 0 var(--bg-inset); }
+  .stat-ovr .lbl{ font-family:var(--font-pixel); font-size:8px; color:var(--text-dim); margin-top:6px; }
+  .stat-name{ text-align:right; }
+  .stat-name .n{ font-family:var(--font-pixel); font-size:13px; color:var(--text); text-shadow:2px 2px 0 var(--bg-inset); }
+  .stat-name .pos{ font-family:var(--font-pixel); font-size:8px; color:var(--teal); margin-top:6px; }
+
+  .stat-rows{ display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
+  .stat-row{ display:grid; grid-template-columns:34px 74px 1fr; align-items:center; gap:10px; }
+  .stat-row .abbr{ font-family:var(--font-pixel); font-size:10px; color:var(--yellow); }
+  .stat-row .val{ font-family:var(--font-pixel); font-size:10px; }
+  .stat-bar-bg{ height:8px; background:var(--bg-inset); border:2px solid var(--border-soft); }
+  .stat-bar-fill{ height:100%; background:var(--teal); }
+
+  .stat-card-foot{
+    display:flex; justify-content:space-between; align-items:center;
+    border-top:2px dashed var(--border-soft); padding-top:14px;
+    font-family:var(--font-pixel); font-size:9px; color:var(--text-dim);
+  }
+
+  .skills-legend{
+    margin-top:28px;
+    display:grid; grid-template-columns:1fr; gap:14px;
+  }
+  @media (min-width:640px){ .skills-legend{ grid-template-columns:1fr 1fr; } }
+  .legend-item h3{ font-family:var(--font-pixel); font-size:10px; color:var(--teal); margin-bottom:10px; }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{
+    font-size:14px;
+    background:var(--bg-inset);
+    border:1px solid var(--border-soft);
+    padding:5px 9px;
+    color:var(--text-dim);
+  }
+
+  /* ============ EXPERIENCE / QUEST LOG ============ */
+  .quest-head{
+    display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;
+    margin-bottom:6px;
+  }
+  .quest-head h3{ font-family:var(--font-pixel); font-size:13px; color:var(--text); }
+  .quest-head .dates{ font-family:var(--font-pixel); font-size:8px; color:var(--yellow); }
+  .quest-sub{ color:var(--text-dim); margin:0 0 20px; font-size:17px; }
+
+  .quest-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:16px; }
+  .quest-list li{ display:flex; gap:12px; align-items:flex-start; }
+  .quest-check{
+    flex:0 0 auto; width:20px; height:20px;
+    background:var(--bg-inset); border:2px solid var(--green);
+    color:var(--green); font-family:var(--font-pixel); font-size:9px;
+    display:flex; align-items:center; justify-content:center;
+    margin-top:2px;
+  }
+  .quest-list p{ margin:0; }
+  .quest-list strong{ color:var(--teal); }
+
+  /* ============ PROJECTS / CARTRIDGES ============ */
+  .cart-grid{
+    display:grid; grid-template-columns:1fr; gap:20px;
+  }
+  @media (min-width:680px){ .cart-grid{ grid-template-columns:1fr 1fr; } }
+
+  .cartridge{
+    background:var(--bg-panel-2);
+    border:var(--px) solid var(--border);
+    box-shadow:0 6px 0 0 var(--bg-inset);
+    padding:20px;
+    position:relative;
+    transition:transform 120ms ease, box-shadow 120ms ease;
+  }
+  .cartridge::before{
+    content:"";
+    position:absolute; top:-4px; left:22px; right:22px; height:10px;
+    background:var(--bg-inset);
+    border-left:4px solid var(--border);
+    border-right:4px solid var(--border);
+  }
+  .cartridge:hover{ transform:translateY(-4px); box-shadow:0 10px 0 0 var(--bg-inset); }
+  .cartridge.is-featured-cartridge {
+    border-color: var(--yellow);
+    box-shadow: 0 10px 0 0 var(--bg-inset), 0 0 16px rgba(255, 204, 51, 0.4);
+    transform: translateY(-6px);
+  }
+
+  /* ============ CASE STUDY EXPANSION ============ */
+  .case-study-drawer {
+    display: none;
+    margin-top: 16px;
+    background: var(--bg-inset);
+    border: 2px dashed var(--border-soft);
+    padding: 16px;
+    font-family: var(--font-mono);
+    color: var(--text-dim);
+    text-align: left;
+    max-height: 480px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-soft) var(--bg-inset);
+  }
+  .case-study-drawer::-webkit-scrollbar {
+    width: 6px;
+  }
+  .case-study-drawer::-webkit-scrollbar-track {
+    background: var(--bg-inset);
+  }
+  .case-study-drawer::-webkit-scrollbar-thumb {
+    background: var(--border-soft);
+  }
+  .case-study-drawer.is-open {
+    display: block;
+    animation: expandFade 180ms ease-out forwards;
+  }
+  @keyframes expandFade {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .dev-log-title {
+    font-family: var(--font-pixel);
+    font-size: 8.5px;
+    color: var(--yellow);
+    margin: 0 0 12px;
+    letter-spacing: 0.5px;
+  }
+  .dev-log-section {
+    margin-bottom: 14px;
+  }
+  .dev-log-section:last-child {
+    margin-bottom: 0;
+  }
+  .dev-log-h5 {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    color: var(--teal);
+    margin: 0 0 6px;
+    letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .dev-log-h5::before {
+    content: "▸";
+    color: var(--yellow);
+  }
+  .dev-log-p {
+    font-size: 16.5px;
+    line-height: 1.4;
+    margin: 0;
+    color: var(--text-dim);
+  }
+  .dev-log-list {
+    margin: 6px 0 0;
+    padding-left: 18px;
+    list-style-type: square;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .dev-log-list li {
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--text-dim);
+  }
+  .dev-log-list strong {
+    color: var(--text);
+  }
+
+  .cart-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px; }
+  .cart-top h3{ font-family:var(--font-pixel); font-size:12px; line-height:1.5; color:var(--text); }
+  .cart-tag{
+    flex:0 0 auto; font-family:var(--font-pixel); font-size:8.5px; letter-spacing:.5px;
+    padding:5px 7px; border:1px solid var(--bg-inset); white-space:nowrap;
+  }
+  .cart-tag--live{ background:var(--green); color:var(--bg-inset); animation:blink 1.6s step-end infinite; }
+  .cart-tag--run{ background:var(--teal); color:var(--bg-inset); }
+  .cart-tag--ship{ background:var(--yellow); color:var(--bg-inset); }
+  .cart-tag--solo{ background:var(--text-dim); color:var(--bg-inset); }
+  .cart-tag--design{ background:#d18be2; color:var(--bg-inset); }
+
+  .cartridge p{ color:var(--text-dim); font-size:16.5px; margin:0 0 14px; }
+  .cartridge .chip-row{ margin-bottom:0; }
+
+  /* ============ CONTACT ============ */
+  .contact-panel{ text-align:center; padding:40px 24px; }
+  .contact-panel .section-title{ margin-bottom:10px; }
+  .contact-sub{ color:var(--text-dim); margin-bottom:28px; }
+  .contact-actions{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-bottom:28px; }
+  .contact-meta{ display:flex; gap:18px; flex-wrap:wrap; justify-content:center; color:var(--text-dim); font-size:16px; }
+  .contact-meta a{ color:var(--teal); text-decoration:none; }
+  .contact-meta a:hover{ text-decoration:underline; }
+
+  footer{
+    text-align:center;
+    padding:32px 24px calc(var(--console-h) + 32px);
+    font-family:var(--font-pixel);
+    font-size:9.5px;
+    color:var(--text-dim);
+    letter-spacing:.5px;
+  }
+  footer .save-blip{ color:var(--yellow); animation:blink 1.4s step-end infinite; }
+
+  @media (min-width:881px){
+    footer{ padding-bottom:32px; }
+  }
+
+  /* ============ GBC CONSOLE (mobile nav/scroll) ============ */
+  .gbc-console{
+    position:fixed; left:0; right:0; bottom:0; z-index:60;
+    background:var(--bg-panel);
+    border-top:var(--px) solid var(--border);
+    box-shadow:0 -4px 0 0 var(--bg-inset);
+    padding:14px 18px calc(10px + env(safe-area-inset-bottom));
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .gbc-bezel{
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--bg-inset);
+    border:3px solid var(--border);
+    border-radius:12px;
+    padding:10px 16px;
+    box-shadow:inset 0 0 10px rgba(0,0,0,.6);
+  }
+
+  .dpad{
+    display:grid;
+    grid-template-columns:26px 26px 26px;
+    grid-template-rows:26px 26px 26px;
+  }
+  .dpad button{
+    background:#302a44; border:2px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--text); cursor:pointer; padding:0;
+    box-shadow:inset 0 2px 0 rgba(255,255,255,.08);
+    transition:background 80ms ease, transform 80ms ease;
+    font-size:11px;
+  }
+  .dpad button:active{ background:var(--yellow); color:var(--bg-inset); transform:scale(.94); }
+  .dpad-up{ grid-column:2; grid-row:1; border-radius:4px 4px 0 0; border-bottom:none; }
+  .dpad-left{ grid-column:1; grid-row:2; border-radius:4px 0 0 4px; border-right:none; }
+  .dpad-hub{ grid-column:2; grid-row:2; background:#302a44; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; }
+  .dpad-hub .dot{ width:4px; height:4px; border-radius:50%; background:#0c0916; }
+  .dpad-right{ grid-column:3; grid-row:2; border-radius:0 4px 4px 0; border-left:none; }
+  .dpad-down{ grid-column:2; grid-row:3; border-radius:0 0 4px 4px; border-top:none; }
+
+  .ss-group{ display:flex; gap:14px; align-items:center; }
+  .ss-item{ display:flex; flex-direction:column; align-items:center; gap:5px; }
+  .ss-pill{
+    width:30px; height:9px; border-radius:8px;
+    background:#4b4460; border:2px solid var(--border);
+    transform:rotate(-25deg);
+    box-shadow:0 2px 0 var(--bg-inset);
+    cursor:pointer;
+  }
+  .ss-pill:active{ background:var(--yellow); transform:rotate(-25deg) translateY(1px); box-shadow:none; }
+  .ss-lbl{ font-family:var(--font-pixel); font-size:8px; color:var(--text-dim); }
+
+  .ab-group{ display:flex; gap:10px; transform:rotate(-15deg); }
+  .ab-item{ display:flex; flex-direction:column; align-items:center; gap:5px; }
+  .ab-btn{
+    width:26px; height:26px; border-radius:50%;
+    border:2px solid var(--border); cursor:pointer;
+    box-shadow:0 3px 0 var(--bg-inset);
+    transition:transform 80ms ease, box-shadow 80ms ease;
+  }
+  .ab-btn:active{ transform:translateY(2px); box-shadow:0 1px 0 var(--bg-inset); }
+  .ab-b{ background:var(--red); }
+  .ab-a{ background:var(--teal); }
+  .ab-lbl{ font-family:var(--font-pixel); font-size:9px; color:var(--text-dim); transform:rotate(15deg); }
+
+  .console-labels{ display:flex; gap:6px; }
+  .console-labels a{
+    flex:1; text-align:center; text-decoration:none;
+    font-family:var(--font-pixel); font-size:8px; letter-spacing:.3px;
+    color:var(--text-dim); background:var(--bg-inset);
+    border:2px solid var(--border); padding:8px 2px;
+    display:flex; align-items:center; justify-content:center;
+    height:30px;
+  }
+  .console-labels a.is-active, .console-labels a:hover{
+    color:var(--yellow); border-color:var(--yellow); background:var(--bg-panel-2);
+  }
+
+  /* ============ RESPONSIVE: DESKTOP SWAP ============ */
+  @media (max-width:880px){
+    .top-header{ display:none !important; }
+    .gbc-console{ display:flex; }
+    .console-labels{ display:none !important; }
+    :root{ --console-h: 112px; }
+  }
+  @media (min-width:881px){
+    .top-header{ display:flex; }
+    .gbc-console{ display:none !important; }
+    .hero{ padding-top:calc(var(--header-h) + 56px); }
+    footer{ padding-bottom:40px; }
+    body{ padding-bottom:0; }
+  }
+  @media (max-width:880px){
+    body{ padding-bottom:0; }
+  }
+
+  /* ============ CASE STUDY MODAL (POPUP) ============ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(8, 5, 15, 0.85);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: modalFadeIn 0.2s steps(4) forwards;
+  }
+  .modal-overlay.is-visible {
+    display: flex;
+  }
+  .modal-container {
+    background: var(--bg-panel);
+    border: 4px solid var(--border);
+    box-shadow: 0 12px 0 0 var(--bg-inset), 0 0 20px rgba(0, 0, 0, 0.8);
+    width: 100%;
+    max-width: 750px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    animation: modalSlideIn 0.2s steps(4) forwards;
+  }
+  .modal-header {
+    background: var(--bg-panel-2);
+    border-bottom: 4px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-title {
+    font-family: var(--font-pixel);
+    font-size: 11px;
+    color: var(--yellow);
+    margin: 0;
+    text-shadow: 2px 2px 0 var(--bg-inset);
+  }
+  .modal-close-btn {
+    background: var(--red);
+    color: var(--bg-inset);
+    border: 2px solid #a30e32;
+    font-family: var(--font-pixel);
+    font-size: 11px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 3px 0 0 var(--bg-inset);
+    transition: transform 60ms steps(2), box-shadow 60ms steps(2);
+    padding: 0;
+    line-height: 1;
+  }
+  .modal-close-btn:active {
+    transform: translateY(3px);
+    box-shadow: none;
+  }
+  .modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-soft) var(--bg-inset);
+    text-align: left;
+  }
+  .modal-body::-webkit-scrollbar {
+    width: 8px;
+  }
+  .modal-body::-webkit-scrollbar-track {
+    background: var(--bg-inset);
+  }
+  .modal-body::-webkit-scrollbar-thumb {
+    background: var(--border-soft);
+  }
+  @keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes modalSlideIn {
+    from { transform: translateY(20px); }
+    to { transform: translateY(0); }
+  }
+
+  /* ============ RETRO TOAST NOTIFICATION ============ */
+  .retro-toast {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-panel-2);
+    border: 2px solid var(--yellow);
+    box-shadow: 0 4px 0 var(--bg-inset);
+    color: var(--yellow);
+    padding: 10px 16px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.2s steps(4), opacity 0.2s steps(4);
+  }
+  .retro-toast.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+  <div class="crt-overlay"></div>
+  <div class="vignette"></div>
+
+  <!-- ================= TOP HEADER (desktop) ================= -->
+  <header class="top-header">
+    <div class="wrap">
+      <a class="brand" href="#hero">
+        <svg class="brand-mark" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <rect width="16" height="16" fill="#08050f"/>
+          <rect x="2" y="2" width="12" height="12" fill="#ffcc33"/>
+          <rect x="4" y="4" width="3" height="3" fill="#08050f"/>
+          <rect x="9" y="4" width="3" height="3" fill="#08050f"/>
+          <rect x="5" y="9" width="6" height="2" fill="#ff3b6b"/>
+        </svg>
+        <span class="brand-text">SAAD_AHMAD<span class="blip"></span></span>
+      </a>
+      <nav class="top-nav" id="top-nav">
+        <a href="#profile" data-section="profile">Profile</a>
+        <a href="#education" data-section="education">Education</a>
+        <a href="#stats" data-section="stats">Stats</a>
+        <a href="#work" data-section="work">Work</a>
+        <a href="#projects" data-section="projects">Projects</a>
+        <a href="#side-quests" data-section="side-quests">Side Quests</a>
+        <a href="#contact" data-section="contact">Contact</a>
+      </nav>
+      <div class="header-status"><span class="dot"></span>ONLINE</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= HERO ================= -->
+    <section id="hero" class="hero">
+      <div class="hero-grid-bg"></div>
+      <div class="wrap">
+        <div class="hero-kicker"><span class="console-dot"></span>LAHORE, PAKISTAN — NEW GAME</div>
+        <h1 class="hero-title">SAAD AHMAD<span class="cursor"></span></h1>
+        <p class="hero-role">FULL-STACK DEVELOPER &amp; FOUNDER</p>
+        <p class="hero-copy">Full-stack developer building custom POS, ERP, and CRM systems that run in real businesses — not demos — including through my software studio, BitLogicHub. Off the clock, tuning a football-match prediction engine.</p>
+        <div class="hero-ctas">
+          <a href="#projects" class="pixel-btn pixel-btn--yellow">▶ View Projects</a>
+          <a href="#contact" class="pixel-btn pixel-btn--ghost">✉ Contact</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROFILE ================= -->
+    <section id="profile" class="section">
+      <div class="wrap">
+        <div class="eyebrow">PROFILE.TXT</div>
+        <h2 class="section-title">Who's Playing</h2>
+        <div class="profile-grid">
+          <div class="profile-copy">
+            <p>Full-stack developer comfortable across the entire stack, building production-ready POS, ERP, and CRM systems for small and medium businesses, including through my software studio, <strong>BitLogicHub</strong>.</p>
+            <p>Comfortable across the entire stack — database architecture, financial-integrity logic, backend services, and React frontends — with systems that are <strong>live in production, not demos.</strong></p>
+            <p>Also builds statistical and ML systems on the side, most notably a football-match prediction engine running at <strong>~61% accuracy.</strong></p>
+          </div>
+          <div class="profile-sidebar">
+            <div class="panel panel--raised" style="margin-bottom:16px;">
+              <ul class="facts-list">
+                <li><span class="k">LOCATION</span><span class="v">Lahore, Pakistan</span></li>
+                <li><span class="k">ROLE</span><span class="v">Founder, BitLogicHub</span></li>
+                <li><span class="k">FOCUS</span><span class="v">POS · ERP · CRM · ML</span></li>
+                <li><span class="k">EMAIL</span><a class="v" href="mailto:saadahmad200555@gmail.com">saadahmad200555@gmail.com</a></li>
+                <li><span class="k">PHONE</span><span class="v">+92 317 8440437</span></li>
+                <li><span class="k">GITHUB</span><a class="v" href="https://github.com/saadiwaadi" target="_blank" rel="noopener">github.com/saadiwaadi</a></li>
+                <li><span class="k">LINKEDIN</span><a class="v" href="https://www.linkedin.com/in/saad-ahmad-a99532279" target="_blank" rel="noopener">in/saad-ahmad</a></li>
+              </ul>
+            </div>
+            <div class="panel panel--raised">
+              <div class="eyebrow" style="margin-bottom:8px;">CURRENT_FOCUS</div>
+              <p style="margin:0; font-size:16.5px; color:var(--text-dim);">Actively researching robust offline-first synchronization patterns and lightweight ML deployments.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= EDUCATION ================= -->
+    <section id="education" class="section">
+      <div class="wrap">
+        <div class="eyebrow">ACADEMICS.TXT</div>
+        <h2 class="section-title">Education</h2>
+        <div class="panel">
+          <ul class="facts-list">
+            <li><span class="k">INSTITUTION</span><span class="v">University of Lahore</span></li>
+            <li><span class="k">DEGREE</span><span class="v">Bachelor of Science in Computer Science (BS CS)</span></li>
+            <li><span class="k">GRADUATION</span><span class="v">[YEAR]</span></li>
+            <li><span class="k">CORE_STUDIES</span><span class="v">Data Structures · Database Systems · Software Engineering</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STATS ================= -->
+    <section id="stats" class="section">
+      <div class="wrap">
+        <div class="eyebrow">SKILLS.DAT</div>
+        <h2 class="section-title">Player Card</h2>
+
+        <div class="card-frame">
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <div class="stat-ovr"><span class="num">83</span><span class="lbl">OVR</span></div>
+              <div class="stat-name">
+                <div class="n">S. AHMAD</div>
+                <div class="pos">POS: FULL-STACK / FOUNDER</div>
+              </div>
+            </div>
+            <div class="stat-rows">
+              <div class="stat-row"><span class="abbr">SYS</span><span class="val">3 Systems</span><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:90%"></div></div></div>
+              <div class="stat-row"><span class="abbr">LCP</span><span class="val">2 Clients</span><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:85%"></div></div></div>
+              <div class="stat-row"><span class="abbr">FIN</span><span class="val">4 Modules</span><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:95%"></div></div></div>
+              <div class="stat-row"><span class="abbr">ACC</span><span class="val">~61% Acc</span><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:61%"></div></div></div>
+              <div class="stat-row"><span class="abbr">STK</span><span class="val">8 Tools</span><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:80%"></div></div></div>
+              <div class="stat-row"><span class="abbr">YRS</span><span class="val">3+ Years</span><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:85%"></div></div></div>
+            </div>
+            <div class="stat-card-foot">
+              <span>BITLOGICHUB FC</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="skills-legend">
+          <div class="legend-item">
+            <h3>LANGUAGES</h3>
+            <div class="chip-row"><span class="chip">JavaScript / TypeScript</span><span class="chip">Python</span><span class="chip">SQL</span></div>
+          </div>
+          <div class="legend-item">
+            <h3>FRONTEND</h3>
+            <div class="chip-row"><span class="chip">React</span><span class="chip">Vue 3</span><span class="chip">Tailwind CSS</span></div>
+          </div>
+          <div class="legend-item">
+            <h3>BACKEND</h3>
+            <div class="chip-row"><span class="chip">Node.js / Express</span><span class="chip">Django</span><span class="chip">Electron</span></div>
+          </div>
+          <div class="legend-item">
+            <h3>DATA &amp; INFRA</h3>
+            <div class="chip-row"><span class="chip">PostgreSQL</span><span class="chip">SQLite</span><span class="chip">Supabase</span><span class="chip">Docker</span><span class="chip">Railway</span><span class="chip">Vercel</span><span class="chip">GitHub Actions</span><span class="chip">BullMQ</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WORK / EXPERIENCE ================= -->
+    <section id="work" class="section">
+      <div class="wrap">
+        <div class="eyebrow">EXPERIENCE.LOG</div>
+        <h2 class="section-title">Quest Log</h2>
+        <div class="panel">
+          <div class="quest-head">
+            <h3>Founder &amp; Full-Stack Developer — BitLogicHub</h3>
+            <span class="dates">2023 — PRESENT</span>
+          </div>
+          <p class="quest-sub">Running a software studio delivering custom POS, ERP and CRM systems for SME clients — requirements through architecture through deployment.</p>
+          <ul class="quest-list">
+            <li>
+              <span class="quest-check">✓</span>
+              <div>
+                <p><strong>Cheema Traders POS</strong> — Rebuilt all core transaction write paths and ledger systems:</p>
+                <ul style="margin:8px 0 0; padding-left:20px; list-style-type:square; color:var(--text-dim); display:flex; flex-direction:column; gap:4px; font-size:16.5px;">
+                  <li>Converted sales, customer payments, supplier payments, and expenses to atomic transactions, resolving a silent general-ledger desync bug.</li>
+                  <li>Added an inline GL ledger panel with Excel/PDF export capabilities.</li>
+                  <li>Designed a custom partial-return system to handle product returns smoothly.</li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <span class="quest-check">✓</span>
+              <div>
+                <p><strong>River View ERP</strong> — Conducted a full financial integrity audit and resolved ledger discrepancies:</p>
+                <ul style="margin:8px 0 0; padding-left:20px; list-style-type:square; color:var(--text-dim); display:flex; flex-direction:column; gap:4px; font-size:16.5px;">
+                  <li>Audited ledger transactions and resolved six confirmed core bugs, including orphaned payment records.</li>
+                  <li>Fixed a critical trial-balance discrepancy originating from missing late-fee postings.</li>
+                  <li>Shipped a discount/amnesty scheme with per-plot exclusions and context-aware validation.</li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <span class="quest-check">✓</span>
+              <div>
+                <p><strong>ORACLE-26</strong> — Built and validated a Dixon-Coles match prediction engine:</p>
+                <ul style="margin:8px 0 0; padding-left:20px; list-style-type:square; color:var(--text-dim); display:flex; flex-direction:column; gap:4px; font-size:16.5px;">
+                  <li>Developed a Poisson model with opponent-adjusted lambdas and live-form data.</li>
+                  <li>Automated ingestion pipelines using five scheduled scrapers triggered by GitHub Actions.</li>
+                  <li>Conducted mutation testing (mutmut) to achieve a high ~70% mutation score.</li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <span class="quest-check">✓</span>
+              <div>
+                <p><strong>CarrierLens</strong> — Designed the full production architecture end-to-end:</p>
+                <ul style="margin:8px 0 0; padding-left:20px; list-style-type:square; color:var(--text-dim); display:flex; flex-direction:column; gap:4px; font-size:16.5px;">
+                  <li>Designed infrastructure scaling paths from a React/Vite Vercel frontend to Railway-hosted Express backend servers.</li>
+                  <li>Configured Supabase for persistent storage and BullMQ workers for async background job execution.</li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROJECTS / CARTRIDGES ================= -->
+    <section id="projects" class="section">
+      <div class="wrap">
+        <div class="eyebrow">PROJECTS.BIN</div>
+         <div class="cart-grid">
+
+          <article class="cartridge" data-project-id="cheema-traders-pos">
+            <div class="cart-top">
+              <h3>Cheema Traders POS</h3>
+              <span class="cart-tag cart-tag--live">LIVE</span>
+            </div>
+            <p>Electron + SQLite point of sale. Atomic write paths across sales, payments and expenses, with an inline GL ledger, Excel/PDF export and a standardized delete-with-reversal pattern.</p>
+            <div class="chip-row"><span class="chip">Electron</span><span class="chip">SQLite</span></div>
+            <a href="?project=cheema-traders-pos" class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶ VIEW CASE STUDY</a>
+            <div class="case-study-drawer">
+              <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PROJECT OVERVIEW</div>
+                <p class="dev-log-p">An offline-first desktop Point of Sale (POS) solution built for Cheema Traders to manage sales, expenses, inventory, and dual-ledger accounts.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
+                <ul class="dev-log-list">
+                  <li><strong>System Architecture:</strong> Desktop client shell isolating local system calls.</li>
+                  <li><strong>Backend:</strong> Electron main process managing configuration, file exports, and database persistence.</li>
+                  <li><strong>Frontend:</strong> React renderer UI with custom styling.</li>
+                  <li><strong>Database:</strong> SQLite database embedded locally within user data storage.</li>
+                  <li><strong>APIs &amp; Auth:</strong> Fully local, no external APIs. File protection rules applied.</li>
+                  <li><strong>Deployment:</strong> Packaged native installers generated via Electron builder.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNOLOGY STACK</div>
+                <p class="dev-log-p">Electron, SQLite, JavaScript, HTML5, CSS3, ExcelJS, PDFKit.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">KEY FEATURES</div>
+                <ul class="dev-log-list">
+                  <li><strong>Dual-Ledger Accounting:</strong> Real-time balancing tracking customer and supplier transactions.</li>
+                  <li><strong>General Ledger Panel:</strong> Inline summaries with Excel sheet and PDF invoice exporters.</li>
+                  <li><strong>Delete-with-Reversal:</strong> Enforces account transparency by requiring reversal items instead of database deletions.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
+                <p class="dev-log-p">Encountered silent general-ledger (GL) desync bugs during concurrent ledger updates. Solved by refactoring the sales, customer payments, supplier payments, and expense write paths into database-level atomic transactions, ensuring database queries commit fully or rollback entirely.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">DESIGN DECISIONS</div>
+                <p class="dev-log-p">Opted for an embedded SQLite database inside an Electron shell to eliminate dependency on unstable internet connections in retail zones, guaranteeing 100% operational uptime.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
+                <p class="dev-log-p">Indexed SQLite primary transaction tables, keeping query retrieval times below 10ms for up to 100,000 ledger records.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">WHAT I LEARNED</div>
+                <p class="dev-log-p">Acquired deep insight into data integrity practices. Enforcing strict validation rules on the database-level is superior to managing logic purely on the frontend wrapper.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="cartridge" data-project-id="river-view-erp">
+            <div class="cart-top">
+              <h3>River View ERP</h3>
+              <span class="cart-tag cart-tag--live">LIVE</span>
+            </div>
+            <p>React + PostgreSQL ERP. Full financial-integrity audit, six confirmed bugs resolved, plus a discount/amnesty scheme with a context-aware payment modal.</p>
+            <div class="chip-row"><span class="chip">React</span><span class="chip">PostgreSQL</span></div>
+            <a href="?project=river-view-erp" class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶ VIEW CASE STUDY</a>
+            <div class="case-study-drawer">
+              <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PROJECT OVERVIEW</div>
+                <p class="dev-log-p">An Enterprise Resource Planning (ERP) platform for River View real estate, tracking plot installment scheduling, late fee structures, and billing details.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
+                <ul class="dev-log-list">
+                  <li><strong>System Architecture:</strong> Dynamic single-page client coupled with a RESTful server.</li>
+                  <li><strong>Backend:</strong> Django REST framework managing data serialization and payment processing.</li>
+                  <li><strong>Frontend:</strong> React client with a responsive modular layout.</li>
+                  <li><strong>Database:</strong> PostgreSQL engine tracking plot indices and user accounts.</li>
+                  <li><strong>APIs &amp; Auth:</strong> JSON Web Tokens (JWT) for secure REST API endpoints authentication.</li>
+                  <li><strong>Deployment:</strong> Containerized REST server deployed via Railway.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNOLOGY STACK</div>
+                <p class="dev-log-p">React, Python, Django, PostgreSQL, Tailwind CSS, Docker, Railway.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">KEY FEATURES</div>
+                <ul class="dev-log-list">
+                  <li><strong>Installment Matrices:</strong> Dynamic payment schedule sheets indicating upcoming billing plans.</li>
+                  <li><strong>Discount / Amnesty Engine:</strong> Highly configurable scheme allowing exclusions on a per-plot basis.</li>
+                  <li><strong>Context-Aware Payments:</strong> UI modal matching payment entries against real-time ledger validations.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
+                <p class="dev-log-p">Ledger integrity bugs causing orphaned payment logs and trial-balance discrepancies. Conducted a complete audit and corrected six confirmed bugs by adding constraints and foreign key triggers on PostgreSQL schemas.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">DESIGN DECISIONS</div>
+                <p class="dev-log-p">Selected PostgreSQL over NoSQL to handle complex transactional ledger queries that require strict schema enforcement and multi-table ACID guarantees.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
+                <p class="dev-log-p">Utilized PG connection poolers, ensuring heavy installment ledger reports execute in under 1.5 seconds under high concurrent user loads.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">WHAT I LEARNED</div>
+                <p class="dev-log-p">Learned that complex scheduling systems require automated ledger reconciliation tests to guarantee balance sheet accuracy.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="cartridge" data-project-id="oracle-26">
+            <div class="cart-top">
+              <h3>ORACLE-26</h3>
+              <span class="cart-tag cart-tag--run">RUNNING</span>
+            </div>
+            <p>Dixon-Coles-corrected Poisson model with opponent-adjusted lambdas and live-form data. ~61% accuracy across 82+ matches, Brier score ~0.54, five scheduled GitHub Actions scrapers.</p>
+            <div class="chip-row"><span class="chip">Python</span><span class="chip">GitHub Actions</span><span class="chip">mutmut</span></div>
+            <a href="?project=oracle-26" class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶ VIEW CASE STUDY</a>
+            <div class="case-study-drawer">
+              <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PROJECT OVERVIEW</div>
+                <p class="dev-log-p">A statistical football match prediction engine evaluating match win/draw probabilities using live league histories and Dixon-Coles time-decay weights.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
+                <ul class="dev-log-list">
+                  <li><strong>System Architecture:</strong> Automation-driven batch computation pipeline.</li>
+                  <li><strong>Backend:</strong> Python engine executing SciPy Poisson probability calculators.</li>
+                  <li><strong>Frontend:</strong> Automatically updated markdown stats logs in git repositories.</li>
+                  <li><strong>Database:</strong> High-performance local Pandas dataframes.</li>
+                  <li><strong>APIs:</strong> Python requests scrapers pulling real-time football score feeds.</li>
+                  <li><strong>Deployment:</strong> Runs on scheduled crons via GitHub Actions workflow triggers.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNOLOGY STACK</div>
+                <p class="dev-log-p">Python, SciPy, Pandas, NumPy, GitHub Actions, mutmut.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">KEY FEATURES</div>
+                <ul class="dev-log-list">
+                  <li><strong>Dixon-Coles Engine:</strong> Advanced Poisson distributions adjusting team strength parameters based on timeline weights.</li>
+                  <li><strong>Automated Ingestion:</strong> Five scheduled scrapers collecting match histories and player card stats dynamically.</li>
+                  <li><strong>Brier Evaluator:</strong> Automated error monitoring reporting a Brier score of ~0.54.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
+                <p class="dev-log-p">Mitigating silent regressions in predictive probability math. Resolved by adopting mutation testing (via mutmut), achieving a ~70% mutation score to verify that mathematical equations handle parameters without breaking.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">DESIGN DECISIONS</div>
+                <p class="dev-log-p">Deployed on GitHub Actions rather than a continuous active web server, cutting operating expenses to zero while executing scheduled runs reliably.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
+                <p class="dev-log-p">Refactored Scipy arrays, dropping match evaluation times down to under 50ms per match history calculation block.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">WHAT I LEARNED</div>
+                <p class="dev-log-p">Mutation testing is a critical tool for statistical codebases, finding missing tests and logic flaws that standard coverage metrics fail to flag.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="cartridge" data-project-id="carrierlens">
+            <div class="cart-top">
+              <h3>CarrierLens</h3>
+              <span class="cart-tag cart-tag--ship">SHIPPED</span>
+            </div>
+            <p>End-to-end production architecture: React/Vite on Vercel, Express/Docker on Railway, Supabase for data, BullMQ for background jobs.</p>
+            <div class="chip-row"><span class="chip">React</span><span class="chip">Railway</span><span class="chip">Supabase</span><span class="chip">BullMQ</span></div>
+            <a href="?project=carrierlens" class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶ VIEW CASE STUDY</a>
+            <div class="case-study-drawer">
+              <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PROJECT OVERVIEW</div>
+                <p class="dev-log-p">Architecting a resilient, distributed web backend to ingest logistics and shipping records without downtime.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
+                <ul class="dev-log-list">
+                  <li><strong>System Architecture:</strong> Decoupled microservices architecture.</li>
+                  <li><strong>Backend:</strong> Express REST API running inside Docker.</li>
+                  <li><strong>Frontend:</strong> React/Vite client hosted on Vercel.</li>
+                  <li><strong>Database:</strong> Supabase PostgreSQL instances with row-level security.</li>
+                  <li><strong>APIs &amp; Workers:</strong> Redis-backed BullMQ handling asynchronous tracking synchronization.</li>
+                  <li><strong>Deployment:</strong> Railway container servers.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNOLOGY STACK</div>
+                <p class="dev-log-p">React, Vite, Node.js, Express, Docker, Railway, Supabase, BullMQ, Redis.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">KEY FEATURES</div>
+                <ul class="dev-log-list">
+                  <li><strong>Decoupled Queue Workers:</strong> BullMQ jobs running separately from web API server nodes.</li>
+                  <li><strong>Real-time Tracking:</strong> Webhook listeners updating shipment status tables.</li>
+                  <li><strong>Containerization:</strong> Structured Docker builds maintaining system behavior across dev and production.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
+                <p class="dev-log-p">Logistical syncing tasks blocking the server thread and causing API timeouts. Resolved by offloading the sync operations to BullMQ queue workers, freeing Express backend nodes from parsing data.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">DESIGN DECISIONS</div>
+                <p class="dev-log-p">Paired Railway container hosts with Supabase PostgreSQL because of their quick scalability and built-in replication tools, accelerating development velocity.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
+                <p class="dev-log-p">Decoupled queue worker structure scales independently, allowing processing of up to 500 concurrent tracking updates without slowing API response times.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">WHAT I LEARNED</div>
+                <p class="dev-log-p">Dividing complex platforms into isolated services prevents bottlenecking, maintaining reliable performance under heavy usage.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="cartridge" data-project-id="pace">
+            <div class="cart-top">
+              <h3>Pace</h3>
+              <span class="cart-tag cart-tag--solo">PERSONAL</span>
+            </div>
+            <p>Personal productivity app covering habits, notes, projects, timers and calendar, with a Supabase sync layer built on last-write-wins and row-level security.</p>
+            <div class="chip-row"><span class="chip">React</span><span class="chip">Dexie</span><span class="chip">Supabase</span></div>
+            <a href="?project=pace" class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶ VIEW CASE STUDY</a>
+            <div class="case-study-drawer">
+              <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PROJECT OVERVIEW</div>
+                <p class="dev-log-p">An offline-first personal dashboard coordinating notes, habits, calendars, and tasks with real-time cloud synchronization.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
+                <ul class="dev-log-list">
+                  <li><strong>System Architecture:</strong> Client-side database replicating changes to a cloud backend.</li>
+                  <li><strong>Database (Local):</strong> Dexie.js wrapping IndexedDB for offline persistence.</li>
+                  <li><strong>Database (Cloud):</strong> Supabase PostgreSQL instances with Row-Level Security.</li>
+                  <li><strong>Frontend:</strong> React client with a responsive interface.</li>
+                  <li><strong>APIs &amp; Auth:</strong> Supabase client libraries running WebSocket replication.</li>
+                  <li><strong>Deployment:</strong> Vercel static hosting.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNOLOGY STACK</div>
+                <p class="dev-log-p">React, Dexie.js, IndexedDB, Supabase, Tailwind CSS, Vercel.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">KEY FEATURES</div>
+                <ul class="dev-log-list">
+                  <li><strong>IndexedDB Persistence:</strong> Complete offline operation, keeping local user data instant.</li>
+                  <li><strong>Last-Write-Wins Sync:</strong> Timestamp conflict resolution rules on IndexedDB tables.</li>
+                  <li><strong>Row-Level Security:</strong> Strict Postgres rules ensuring users only edit their own records.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
+                <p class="dev-log-p">Syncing offline client edits without overwriting newer data. Built a timestamp resolution layer inside Dexie synchronization hooks, ensuring newer client edits persist while resolving conflicts automatically.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">DESIGN DECISIONS</div>
+                <p class="dev-log-p">Chose Dexie.js for client storage to bypass local query lag, utilizing Supabase WebSockets as a lightweight backend sync layer.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
+                <p class="dev-log-p">Client transactions run locally in IndexedDB cache, resolving in under 50ms and syncing in the background once online.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">WHAT I LEARNED</div>
+                <p class="dev-log-p">Offline-first application design is best implemented when data mutations are saved as sequential logs, making synchronization straightforward and predictable.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="cartridge" data-project-id="siyaahi">
+            <div class="cart-top">
+              <h3>Siyaahi</h3>
+              <span class="cart-tag cart-tag--design">DESIGN</span>
+            </div>
+            <p>Design and print label producing stickers, posters, and custom editorial visual identities.</p>
+            <div class="chip-row"><span class="chip">Editorial Identity</span><span class="chip">Print Design</span><span class="chip">Merchandise</span></div>
+            <a href="?project=siyaahi" class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶ VIEW CASE STUDY</a>
+            <div class="case-study-drawer">
+              <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PROJECT OVERVIEW</div>
+                <p class="dev-log-p">A design and print label studio creating visual designs, poster art, high-dpi stickers, and modern editorial identities.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
+                <ul class="dev-log-list">
+                  <li><strong>System Architecture:</strong> Print production design structures and asset configurations.</li>
+                  <li><strong>Tech Stack:</strong> Vector design environments.</li>
+                  <li><strong>Export Parameters:</strong> High-resolution rasterization and layout alignment.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">TECHNOLOGY STACK</div>
+                <p class="dev-log-p">Adobe Illustrator, Figma, Vector Assets, CMYK Proofing.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">KEY FEATURES</div>
+                <ul class="dev-log-list">
+                  <li><strong>Editorial Identities:</strong> Cohesive asset kits for corporate and creative branding.</li>
+                  <li><strong>Print Layouts:</strong> Custom templates formatted for large posters and tiny custom stickers.</li>
+                  <li><strong>Merchandising Formats:</strong> Print-ready files adapted for multiple materials.</li>
+                </ul>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
+                <p class="dev-log-p">Visual distortions and color differences between digital monitors and paper prints. Solved by mapping monitor outputs strictly to CMYK profiles, and enforcing minimum 300 DPI exports on physical assets.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">DESIGN DECISIONS</div>
+                <p class="dev-log-p">Committed strictly to vector design methods, guaranteeing infinite scale potential from stickers to billboards without loss of clarity.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
+                <p class="dev-log-p">Organized assets using standardized file structures, matching the strict formatting requirements of print shops.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">WHAT I LEARNED</div>
+                <p class="dev-log-p">Designing for print requires an understanding of physical paper traits, ink absorption dynamics, and print sizing constraints.</p>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SIDE QUESTS ================= -->
+    <section id="side-quests" class="section">
+      <div class="wrap">
+        <div class="eyebrow" style="justify-content:center;">SIDE_QUESTS.LOG</div>
+        <h2 class="section-title" style="text-align:center;">Extra Lives</h2>
+        <div class="panel" style="text-align:center; max-width:680px; margin:0 auto; padding:32px 24px;">
+          <p style="margin:0; font-size:20px; line-height:1.6; color:var(--text);">When I'm away from the keyboard you'll usually find me playing football, working on a short film, taking photos, or writing down ideas before I forget them.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section id="contact" class="section">
+      <div class="wrap">
+        <div class="panel contact-panel">
+          <div class="eyebrow" style="justify-content:center;">SAVE FILE</div>
+          <h2 class="section-title">Continue The Game?</h2>
+          <p class="contact-sub">Open to new builds, hard bugs, and anything football-shaped.</p>
+          <div class="contact-actions">
+            <a class="pixel-btn pixel-btn--yellow" href="mailto:saadahmad200555@gmail.com">✉ Email Me</a>
+            <a class="pixel-btn pixel-btn--teal" href="https://github.com/saadiwaadi" target="_blank" rel="noopener">GitHub</a>
+            <a class="pixel-btn pixel-btn--ghost" href="https://www.linkedin.com/in/saad-ahmad-a99532279" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+          <div class="contact-meta">
+            <span>Lahore, Pakistan</span>
+            <span>+92 317 8440437</span>
+            <a href="mailto:saadahmad200555@gmail.com">saadahmad200555@gmail.com</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= CASE STUDY MODAL ================= -->
+  <div class="modal-overlay" id="case-study-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-title-text">DEVELOPER LOG: CASE STUDY</h4>
+        <button class="modal-close-btn" id="modal-close" aria-label="Close Case Study">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        <!-- Case study details injected here -->
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2026 SAAD AHMAD — ALL RIGHTS RESERVED <span class="save-blip">■</span> PRESS START TO SCROLL UP
+  </footer>
+
+  <!-- ================= GBC CONSOLE (mobile) ================= -->
+  <nav class="gbc-console" aria-label="Console navigation">
+    <div class="gbc-bezel">
+      <div class="dpad">
+        <button class="dpad-up" data-scroll="up" aria-label="Scroll up">▲</button>
+        <div class="dpad-hub"><span class="dot"></span></div>
+        <button class="dpad-down" data-scroll="down" aria-label="Scroll down">▼</button>
+        <button class="dpad-left" data-jump="hero" aria-label="Go to top">◀</button>
+        <button class="dpad-right" data-jump="contact" aria-label="Go to end">▶</button>
+      </div>
+
+      <div class="ss-group">
+        <div class="ss-item"><button class="ss-pill" data-jump="contact" aria-label="Select: contact"></button><span class="ss-lbl">SELECT</span></div>
+        <div class="ss-item"><button class="ss-pill" data-jump="hero" aria-label="Start: top"></button><span class="ss-lbl">START</span></div>
+      </div>
+
+      <div class="ab-group">
+        <div class="ab-item"><button class="ab-btn ab-b" data-jump="stats" aria-label="B: stats"></button><span class="ab-lbl">PLAYER</span></div>
+        <div class="ab-item"><button class="ab-btn ab-a" data-action="cycle-projects" aria-label="A: cycle projects"></button><span class="ab-lbl">PROJECTS</span></div>
+      </div>
+    </div>
+
+    <div class="console-labels" id="console-labels">
+      <a href="#profile" data-section="profile">PROFILE</a>
+      <a href="#education" data-section="education">EDUCATION</a>
+      <a href="#stats" data-section="stats">STATS</a>
+      <a href="#work" data-section="work">WORK</a>
+      <a href="#projects" data-section="projects">PROJECTS</a>
+      <a href="#side-quests" data-section="side-quests">SIDE QUESTS</a>
+      <a href="#contact" data-section="contact">CONTACT</a>
+    </div>
+  </nav>
+
+  <script>
+    var sectionIds = ['hero','profile','education','stats','work','projects','side-quests','contact'];
+    var sections = sectionIds.map(function(id){ return document.getElementById(id); });
+
+    // Hero Name Typing Animation (cycles every 10 seconds)
+    (function() {
+      var heroTitle = document.querySelector('.hero-title');
+      if (heroTitle) {
+        var cursorSpan = document.createElement('span');
+        cursorSpan.className = 'cursor';
+        
+        var nameText = "SAAD AHMAD";
+        var charIndex = 0;
+        var typingSpeed = 120; // ms per character
+        var erasingSpeed = 60; // ms per character
+        var holdDuration = 10000; // 10 seconds hold
+        
+        function type() {
+          if (charIndex < nameText.length) {
+            heroTitle.textContent = nameText.substring(0, charIndex + 1);
+            heroTitle.appendChild(cursorSpan);
+            charIndex++;
+            setTimeout(type, typingSpeed);
+          } else {
+            setTimeout(erase, holdDuration);
+          }
+        }
+        
+        function erase() {
+          if (charIndex > 0) {
+            heroTitle.textContent = nameText.substring(0, charIndex - 1);
+            heroTitle.appendChild(cursorSpan);
+            charIndex--;
+            setTimeout(erase, erasingSpeed);
+          } else {
+            setTimeout(type, 500);
+          }
+        }
+        
+        // Initialize
+        heroTitle.textContent = "";
+        heroTitle.appendChild(cursorSpan);
+        setTimeout(type, 800);
+      }
+    })();
+
+    function jumpTo(id){
+      var el = document.getElementById(id);
+      if(el){ el.scrollIntoView({ behavior:'smooth', block:'start' }); }
+    }
+
+    function currentIndex(){
+      var offset = 90;
+      var y = window.scrollY + offset;
+      var idx = 0;
+      for(var i=0;i<sections.length;i++){
+        if(sections[i] && sections[i].offsetTop <= y){ idx = i; }
+      }
+      return idx;
+    }
+
+    var scrollInterval;
+    var holdTimeout;
+    var isHolding = false;
+
+    function startScrolling(dir) {
+      if (scrollInterval) clearInterval(scrollInterval);
+      var speed = dir === 'down' ? 12 : -12;
+      scrollInterval = setInterval(function() {
+        window.scrollBy(0, speed);
+      }, 16);
+    }
+    function stopScrolling() {
+      if (scrollInterval) {
+        clearInterval(scrollInterval);
+        scrollInterval = null;
+      }
+    }
+
+    document.querySelectorAll('[data-jump]').forEach(function(btn){
+      btn.addEventListener('click', function(){ jumpTo(btn.getAttribute('data-jump')); });
+    });
+    document.querySelectorAll('[data-scroll]').forEach(function(btn){
+      var dir = btn.getAttribute('data-scroll');
+      
+      function handlePress(e) {
+        e.preventDefault();
+        isHolding = false;
+        holdTimeout = setTimeout(function() {
+          isHolding = true;
+          startScrolling(dir);
+        }, 200);
+      }
+
+      function handleRelease(e) {
+        e.preventDefault();
+        clearTimeout(holdTimeout);
+        if (isHolding) {
+          stopScrolling();
+        } else {
+          window.scrollBy({
+            top: dir === 'down' ? 150 : -150,
+            behavior: 'smooth'
+          });
+        }
+      }
+
+      btn.addEventListener('mousedown', handlePress);
+      btn.addEventListener('mouseup', handleRelease);
+      btn.addEventListener('mouseleave', function() {
+        clearTimeout(holdTimeout);
+        stopScrolling();
+      });
+      
+      btn.addEventListener('touchstart', handlePress, { passive: false });
+      btn.addEventListener('touchend', handleRelease, { passive: false });
+      btn.addEventListener('touchcancel', function() {
+        clearTimeout(holdTimeout);
+        stopScrolling();
+      });
+    });
+
+    // Project Cartridge Cycling Logic
+    var activeCartridgeIndex = -1;
+    var cartridges = document.querySelectorAll('.cartridge');
+
+    function cycleProjects(){
+      var currentSecId = sectionIds[currentIndex()];
+      if(currentSecId !== 'projects'){
+        jumpTo('projects');
+        activeCartridgeIndex = 0;
+        highlightCartridge(activeCartridgeIndex);
+      } else {
+        activeCartridgeIndex = (activeCartridgeIndex + 1) % cartridges.length;
+        highlightCartridge(activeCartridgeIndex);
+      }
+    }
+
+    function highlightCartridge(index){
+      cartridges.forEach(function(cart, idx){
+        if(idx === index){
+          cart.classList.add('is-featured-cartridge');
+          cart.scrollIntoView({ behavior:'smooth', block:'nearest' });
+        } else {
+          cart.classList.remove('is-featured-cartridge');
+          // Auto-collapse open drawers during A-button cycling
+          var drawer = cart.querySelector('.case-study-drawer');
+          if(drawer && drawer.classList.contains('is-open')){
+            drawer.classList.remove('is-open');
+            var btn = cart.querySelector('.toggle-case-study');
+            if(btn) btn.textContent = '▶ VIEW CASE STUDY';
+          }
+        }
+      });
+    }
+
+    var cycleBtn = document.querySelector('[data-action="cycle-projects"]');
+    if(cycleBtn){
+      cycleBtn.addEventListener('click', cycleProjects);
+    }
+
+    // Case Study Modal Logic
+    function openCaseStudyModal(projectSlug) {
+      var cartridge = document.querySelector('.cartridge[data-project-id="' + projectSlug + '"]');
+      if (cartridge) {
+        var title = cartridge.querySelector('.cart-top h3').textContent;
+        var drawer = cartridge.querySelector('.case-study-drawer');
+        if (drawer) {
+          var modal = document.getElementById('case-study-modal');
+          var modalTitle = document.getElementById('modal-title-text');
+          var modalBody = document.getElementById('modal-body-content');
+          
+          modalTitle.textContent = title.toUpperCase() + ' — CASE STUDY';
+          modalBody.innerHTML = drawer.innerHTML;
+          modal.classList.add('is-visible');
+          
+          var currentUrl = new URL(window.location.href);
+          currentUrl.searchParams.set('project', projectSlug);
+          history.pushState({ project: projectSlug }, "", currentUrl.toString());
+        }
+      }
+    }
+
+    function closeModal() {
+      var modal = document.getElementById('case-study-modal');
+      if (modal) {
+        modal.classList.remove('is-visible');
+      }
+      var currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.delete('project');
+      history.pushState({}, "", currentUrl.pathname + currentUrl.search);
+    }
+
+    document.querySelectorAll('.toggle-case-study').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var parent = this.closest('.cartridge');
+        if (parent) {
+          var projectSlug = parent.getAttribute('data-project-id');
+          openCaseStudyModal(projectSlug);
+        }
+      });
+    });
+
+    var params = new URLSearchParams(window.location.search);
+    var initialProject = params.get('project');
+    if (initialProject) {
+      openCaseStudyModal(initialProject);
+    }
+
+    window.addEventListener('popstate', function(e) {
+      var params = new URLSearchParams(window.location.search);
+      var projectSlug = params.get('project');
+      var modal = document.getElementById('case-study-modal');
+      if (projectSlug) {
+        var cartridge = document.querySelector('.cartridge[data-project-id="' + projectSlug + '"]');
+        if (cartridge) {
+          var title = cartridge.querySelector('.cart-top h3').textContent;
+          var drawer = cartridge.querySelector('.case-study-drawer');
+          if (drawer) {
+            var modalTitle = document.getElementById('modal-title-text');
+            var modalBody = document.getElementById('modal-body-content');
+            modalTitle.textContent = title.toUpperCase() + ' — CASE STUDY';
+            modalBody.innerHTML = drawer.innerHTML;
+            if (modal) modal.classList.add('is-visible');
+          }
+        }
+      } else {
+        if (modal) modal.classList.remove('is-visible');
+      }
+    });
+
+    var closeBtn = document.getElementById('modal-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeModal);
+    }
+    
+    var modalOverlay = document.getElementById('case-study-modal');
+    if (modalOverlay) {
+      modalOverlay.addEventListener('click', function(e) {
+        if (e.target === modalOverlay) {
+          closeModal();
+        }
+      });
+    }
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        var modal = document.getElementById('case-study-modal');
+        if (modal && modal.classList.contains('is-visible')) {
+          closeModal();
+        }
+      }
+    });
+
+    // active-state highlighting for nav (desktop header + mobile labels)
+    var navLinks = document.querySelectorAll('[data-section]');
+    if('IntersectionObserver' in window){
+      var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            var id = entry.target.id;
+            navLinks.forEach(function(link){
+              link.classList.toggle('is-active', link.getAttribute('data-section') === id);
+            });
+            // Clear cartridge highlight when scrolling out of projects section
+            if(id !== 'projects'){
+              activeCartridgeIndex = -1;
+              cartridges.forEach(function(cart){
+                cart.classList.remove('is-featured-cartridge');
+              });
+            }
+          }
+        });
+      }, { rootMargin:'-45% 0px -45% 0px', threshold:0 });
+
+      ['profile','education','stats','work','projects','side-quests','contact'].forEach(function(id){
+        var el = document.getElementById(id);
+        if(el) observer.observe(el);
+      });
+    }
+
+    // Email Copy-to-Clipboard & Toast Logic
+    function showToast(message) {
+      var toast = document.createElement('div');
+      toast.className = 'retro-toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      // Trigger reflow/animation
+      setTimeout(function() {
+        toast.classList.add('is-visible');
+      }, 10);
+      
+      setTimeout(function() {
+        toast.classList.remove('is-visible');
+        setTimeout(function() {
+          toast.remove();
+        }, 300);
+      }, 2500);
+    }
+
+    document.querySelectorAll('a[href^="mailto:"]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        // Retrieve the clean email address from mailto:saadahmad200555@gmail.com
+        var email = this.getAttribute('href').replace('mailto:', '');
+        
+        // Copy to clipboard
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(email).then(function() {
+            showToast("EMAIL COPIED TO CLIPBOARD!");
+          }).catch(function() {
+            // Fallback copy method
+            fallbackCopyText(email);
+          });
+        } else {
+          fallbackCopyText(email);
+        }
+      });
+    });
+
+    function fallbackCopyText(text) {
+      var textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";  // Avoid scrolling to bottom
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast("EMAIL COPIED TO CLIPBOARD!");
+      } catch (err) {
+        console.error('Fallback copying failed', err);
+      }
+      document.body.removeChild(textArea);
+    }
+  </script>
+</body>
+</html>

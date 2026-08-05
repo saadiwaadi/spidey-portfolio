@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix server\" \"http-server -c-1 -p 8080\"",
+    "start": "npm start --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.4",
+    "http-server": "^14.1.1"
+  }
+}

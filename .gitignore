@@ -1,0 +1,7 @@
+node_modules/
+server/node_modules/
+.gemini/
+*.log
+.env
+.env.*
+*.db
