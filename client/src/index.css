@@ -246,6 +246,7 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
+      height: 100%;
     }
 
     .brand {
@@ -253,6 +254,7 @@
       align-items: center;
       gap: 10px;
       text-decoration: none;
+      align-self: center;
     }
 
     .title-pill {
@@ -262,8 +264,9 @@
       background: var(--bg-panel);
       border: 3px solid var(--text);
       border-radius: 20px;
-      padding: 8px 20px;
+      padding: 6px 16px;
       box-shadow: 0 3px 0 0 var(--border);
+      align-self: center;
     }
 
     .pill-badge {
@@ -503,6 +506,32 @@
     .hero .wrap {
       position: relative;
       z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .hero-text-col {
+      flex: 1 1 0;
+      min-width: 0;
+      order: 0;
+      width: 100%;
+    }
+
+    .hero-image-col {
+      flex: 0 0 auto;
+      width: 180px;
+      max-width: 60vw;
+      margin: 0 auto;
+      order: -1;
+    }
+
+    .hero-image-col img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
     }
 
     .hero-kicker {
@@ -529,6 +558,7 @@
       line-height: 1.25;
       text-shadow: 4px 4px 0 var(--bg-inset);
       margin-bottom: 18px;
+      min-height: 1.25em;
     }
 
     .hero-corner-web {
@@ -742,6 +772,15 @@
       .stats-layout {
         grid-template-columns: 1fr;
       }
+      .stat-card {
+        margin: 0 auto;
+      }
+      #stats {
+        text-align: center;
+      }
+      #stats .chip-row {
+        justify-content: center;
+      }
     }
 
     .stat-card {
@@ -755,6 +794,7 @@
         0 0 26px rgba(245, 166, 35, .18);
       padding: 22px;
       position: relative;
+      text-align: left;
     }
 
     .stat-card-top {
@@ -1487,6 +1527,22 @@
         padding-top: calc(var(--header-h) + 56px);
       }
 
+      .hero .wrap {
+        flex-direction: row;
+        align-items: center;
+        gap: 48px;
+      }
+
+      .hero-text-col {
+        order: unset;
+      }
+
+      .hero-image-col {
+        order: unset;
+        width: 280px;
+        max-width: none;
+      }
+
       .top-header {
         display: flex;
       }
@@ -1731,5 +1787,48 @@
       @media (min-width: 881px) {
         .retro-toast {
           bottom: 90px;
+        }
+      }
+
+      /* ============ SPIDEY LOGO STATUS BUTTON ============ */
+      .spidey-logo-btn {
+        position: absolute;
+        top: 12px;
+        left: 16px;
+        z-index: 1001; /* Sit above CRT layers (999) so it is interactive */
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        background: var(--bg-inset);
+        border: 2px solid var(--border);
+        border-radius: 4px;
+        box-shadow: 2px 2px 0 var(--border);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.1s ease, box-shadow 0.1s ease;
+      }
+
+      .spidey-logo-btn:hover {
+        background: var(--bg-panel-2);
+        transform: translate(-1px, -1px);
+        box-shadow: 3px 3px 0 var(--border);
+      }
+
+      .spidey-logo-btn:active {
+        transform: translate(1px, 1px);
+        box-shadow: 1px 1px 0 var(--border);
+      }
+
+      .spidey-logo-btn img {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+      }
+
+      @media (min-width: 881px) {
+        .top-header .brand {
+          margin-left: 36px;
         }
       }
