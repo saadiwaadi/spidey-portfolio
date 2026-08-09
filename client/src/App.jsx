@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import cornerWebImg from './assets/corner web.png';
 import cutoutSpideyImg from './assets/Cutout spidey.png';
-import spideyLogoImg from './assets/spidey logo.png';
 import { fallbackProjects } from './ProjectData';
 import './App.css';
 
@@ -328,13 +327,6 @@ function App() {
 
       <div className="device-bezel">
         <div className="device-screen-container">
-          <button 
-            className="spidey-logo-btn" 
-            onClick={() => jumpTo('hero')} 
-            aria-label="Go to top"
-          >
-            <img src={spideyLogoImg} alt="Spidey Logo" />
-          </button>
           <div className="crt-overlay"></div>
           <div className="vignette"></div>
           <div className="screen-glass"></div>
@@ -343,11 +335,8 @@ function App() {
             {/* TOP HEADER (desktop) */}
             <header className="top-header">
               <div className="wrap">
-                <div className="brand">
+                <div className="brand" onClick={() => jumpTo('hero')} style={{ cursor: 'pointer' }} title="Scroll to top">
                   <span className="pill-badge pill-badge--left">S</span>
-                  <span className="brand-text">
-                    SAAD_AHMAD<span className="blip"></span>
-                  </span>
                 </div>
                 <nav className="top-nav" id="top-nav">
                   <a
@@ -419,9 +408,7 @@ function App() {
                     <h1 className="hero-title">{typedText}<span className="cursor"></span></h1>
                     <p className="hero-role">FULL-STACK DEVELOPER &amp; FOUNDER</p>
                     <p className="hero-copy">
-                      Full-stack developer building custom POS, ERP, and CRM systems that run in real businesses
-                      — not demos — including through my software studio, BitLogicHub. Off the clock, tuning a football-match
-                      prediction engine.
+                      Full-Stack Developer | Building Production-Grade Systems — POS, ERP &amp; Predictive Engines | React · Electron · SQLite · Python | Creative Storyteller (Video &amp; Brand)
                     </p>
                     <div className="hero-ctas">
                       <a href="#projects" onClick={(e) => { e.preventDefault(); jumpTo('projects'); }} className="pixel-btn pixel-btn--yellow">▶ View Projects</a>
@@ -442,17 +429,16 @@ function App() {
                     <h2 className="section-title section-title-inline" style={{ marginBottom: 0 }}>Who's Playing</h2>
                     <div className="profile-copy">
                       <p>
-                        Full-stack developer comfortable across the entire stack, building production-ready POS, ERP, and CRM
-                        systems for small and medium businesses, including through my software studio,{' '}
-                        <strong>BitLogicHub</strong>.
+                        I’m a full-stack developer and the person behind <strong>BitLogicHub</strong>, where I build software that actually gets used — from POS and ERP systems to CRM and business tools.
                       </p>
                       <p>
-                        Comfortable across the entire stack — database architecture, financial-integrity logic, backend services,
-                        and React frontends — with systems that are <strong>live in production, not demos.</strong>
+                        I like working across the whole stack, getting into everything from databases and backend logic to interfaces and the small details that make a system feel right. I’m especially interested in building things that solve real problems rather than just looking good in a demo.
                       </p>
                       <p>
-                        Also builds statistical and ML systems on the side, most notably a football-match prediction engine
-                        running at <strong>~61% accuracy.</strong>
+                        Outside of client work, I like experimenting with things that are a little more unusual — statistical models, football analytics, simulations, and whatever else catches my curiosity.
+                      </p>
+                      <p>
+                        Basically, I like building useful things, figuring out how they work, and occasionally making them unnecessarily interesting.
                       </p>
                     </div>
                     <div className="profile-sidebar">
@@ -725,7 +711,7 @@ function App() {
                   <h2 className="section-title" style={{ textAlign: 'center' }}>Extra Lives</h2>
                   <div className="panel" style={{ textAlign: 'center', maxWidth: '680px', margin: '0 auto', padding: '32px 24px' }}>
                     <p style={{ margin: 0, fontSize: '16px', lineHeight: 1.6, color: 'var(--text)' }}>
-                      When I'm away from the keyboard you'll usually find me playing football, working on a short film, taking photos, or writing down ideas before I forget them.
+                      When I’m away from the keyboard, I’m usually somewhere between a football pitch, a camera, and a half-finished idea. I’m into football, films, photography, writing, and anything that gives me an excuse to make something. I like stories, good visuals, and noticing the little details that most people tend to overlook. Usually there’s a new idea somewhere in the notes app waiting to become a project.
                     </p>
                   </div>
                 </div>
