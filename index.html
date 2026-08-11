@@ -64,14 +64,24 @@
       inset: 0;
       pointer-events: none;
       z-index: 10000; /* floats above everything */
-      border: 22px solid #5eb8df; /* Outer shell color */
+      border: 22px solid #5eb8df;
       box-shadow:
-        0 0 40px rgba(0, 0, 0, 0.35),                    /* Soft drop shadow on background */
-        inset 0 3px rgba(255, 255, 255, 0.25),           /* Visual depth highlight */
-        inset 0 -3px rgba(0, 0, 0, 0.35),                /* Visual depth shadow */
-        inset 0 2px 0 #9ce8ff,                           /* Outer highlight */
-        inset 0 -2px 0 #2c7399,                          /* Plastic edge */
-        inset 0 0 0 4px #1d4260;                         /* Dark groove */
+        /* 1. Outermost specular — thin bright catch on the physical outer edge */
+        0 0 0 1px #b8eaff,
+        /* 2. Soft outer drop shadow to ground the device */
+        0 4px 32px rgba(0, 0, 0, 0.5),
+        /* 3. Top-left plastic highlight (light source from top-left) */
+        inset 0 3px 0 #9ce8ff,
+        inset 3px 0 0 #7dd4ef,
+        /* 4. Bottom-right shadow (away from light source) */
+        inset 0 -3px 0 #1d5a7a,
+        inset -3px 0 0 #256080,
+        /* 5. The chamfer groove — dark channel right before screen edge */
+        inset 0 0 0 4px #04111e,
+        /* 6. The bright lip — thin bright line sitting in that groove */
+        inset 0 0 0 5px #2a7099,
+        /* 7. Deep screen-edge shadow — separates lip from screen content */
+        inset 0 0 0 7px #020b14;
     }
 
     /* Hardware seams on the overlay */
@@ -121,8 +131,13 @@
       inset: 0;
       pointer-events: none;
       z-index: 997;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 25%, rgba(255, 255, 255, 0) 50%);
-      opacity: .06;
+      background: linear-gradient(
+        130deg,
+        rgba(255,255,255,0.09) 0%,
+        rgba(255,255,255,0.04) 15%,
+        transparent 40%
+      );
+      opacity: 1;
     }
 
     .device-screen-container {
@@ -132,9 +147,15 @@
       flex-direction: column;
       overflow: hidden;
       border-radius: 6px;
-      box-shadow: 
-        inset 0 0 0 3px var(--bg-inset),   /* thin dark inner seam — the "glass edge" of the screen */
-        0 0 24px rgba(0,0,0,.35);           /* soft outward shadow so the screen reads as RECESSED into the bezel, not floating above it */
+      box-shadow:
+        /* The dark screen-well ring — visible around the screen's own edge */
+        inset 0 0 0 3px #010810,
+        /* A second slightly lighter ring — the inner screen bezel/frame */
+        inset 0 0 0 5px #071624,
+        /* Ambient screen glow bleeding into the channel */
+        inset 0 0 20px rgba(0, 100, 180, 0.10),
+        /* Outer drop */
+        0 0 16px rgba(0, 0, 0, 0.6);
     }
 
     .device-screen {
@@ -178,7 +199,7 @@
       inset: 0;
       pointer-events: none;
       z-index: 998;
-      box-shadow: inset 0 0 112px rgba(0, 0, 0, .45);
+      box-shadow: inset 0 0 80px rgba(0,0,0,0.5);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -232,6 +253,7 @@
     /* ============ LAYOUT SHELL ============ */
     .wrap {
       max-width: 1280px;
+      width: 100%;
       margin: 0 auto;
       padding: 0 32px;
     }
@@ -703,6 +725,15 @@
 
     .profile-copy strong {
       color: var(--yellow);
+    }
+
+    .profile-copy p,
+    .dev-log-p,
+    .dev-log-list li,
+    .quest-list p,
+    .cartridge p {
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
 
     .facts-list {
@@ -1264,12 +1295,20 @@
       right: 0;
       height: 160px;
       background: var(--bg-panel);     /* Navy plastic color */
-      border-top: 4px solid var(--border); /* Thick outline separating screen */
+      border-top: 1px solid #04111e;   /* dark groove */
+      box-shadow:
+        /* Bright lip just below the groove — mirrors the inner border lip */
+        inset 0 1px 0 #2a7099,
+        /* Then the hardware body shadow */
+        inset 0 3px 0 rgba(0,0,0,0.3),
+        /* Shadow casting UP from console onto bottom of screen */
+        0 -8px 18px rgba(0,0,0,0.5);
       padding: 14px 18px 10px;
       display: flex;
       flex-direction: column;
       gap: 10px;
       z-index: 9999;                   /* Keeps it above all scrolling content */
+      overflow: hidden; /* safety net so nothing paints past screen edge */
     }
 
     /* The shadow ledge that creates the recessed screen illusion */
@@ -1291,14 +1330,18 @@
       border: 3px solid var(--border);
       border-radius: 12px;
       padding: 14px 20px; /* Slightly increased padding */
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, .6);
+      box-shadow:
+        inset 0 0 12px rgba(0,0,0,0.65),
+        inset 0 1px 0 rgba(255,255,255,0.07),
+        0 1px 3px rgba(0,0,0,0.5);
+      gap: clamp(6px, 2vw, 20px); /* was relying on space-between with no gap control */
     }
 
     /* --- D-PAD --- */
     .dpad-housing {
       position: relative;
-      width: 100px;  /* Decreased from 116px */
-      height: 100px; /* Decreased from 116px */
+      width: clamp(76px, 22vw, 100px);
+      height: clamp(76px, 22vw, 100px);
       background: var(--bg-inset);
       clip-path: polygon(
         34% 0%, 66% 0%, 66% 34%, 100% 34%, 100% 66%,
@@ -1312,8 +1355,8 @@
 
     .dpad {
       display: grid;
-      grid-template-columns: 30px 30px 30px; /* Decreased from 35px */
-      grid-template-rows: 30px 30px 30px;    /* Decreased from 35px */
+      grid-template-columns: repeat(3, clamp(22px, 7vw, 30px));
+      grid-template-rows: repeat(3, clamp(22px, 7vw, 30px));
     }
 
     .dpad button {
@@ -1362,7 +1405,7 @@
     /* --- START / SELECT --- */
     .ss-group {
       display: flex;
-      gap: 18px; /* Increased from 14px */
+      gap: clamp(10px, 3vw, 18px);
       align-items: center;
     }
 
@@ -1374,7 +1417,7 @@
     }
 
     .ss-pill {
-      width: 40px;  /* Increased from 30px */
+      width: clamp(28px, 8vw, 40px);
       height: 12px; /* Increased from 9px */
       border-radius: 10px;
       background: #4b4460;
@@ -1399,7 +1442,7 @@
     /* --- A / B BUTTONS (PLAYER / PROJECTS) --- */
     .ab-group {
       display: flex;
-      gap: 16px; /* Increased from 10px */
+      gap: clamp(10px, 3vw, 16px);
       transform: rotate(-15deg);
     }
 
@@ -1411,8 +1454,8 @@
     }
 
     .ab-btn {
-      width: 46px;  /* Increased from 34px */
-      height: 46px; /* Increased from 34px */
+      width: clamp(36px, 10vw, 46px);
+      height: clamp(36px, 10vw, 46px);
       border-radius: 50%;
       border: 2px solid var(--border);
       cursor: pointer;
@@ -1751,6 +1794,17 @@
         .retro-toast {
           bottom: 90px;
         }
+      }
+
+      @media (max-width: 380px) {
+        .gbc-bezel { padding: 10px 12px; }
+        .ss-lbl, .ab-lbl { font-size: 8px; }
+      }
+
+      @media (max-width: 480px) {
+        :root { --console-h: 128px; }
+        .section { padding: 64px 0; }
+        .hero-title { font-size: clamp(24px, 7vw, 40px); }
       }
     </style>
 </head>
