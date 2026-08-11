@@ -2029,21 +2029,19 @@
               <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">PROJECT OVERVIEW</div>
-                <p class="dev-log-p" style="white-space: pre-line;">A desktop POS and accounting system for a business that doesn't get to be wrong about money.
-
-Cheema Traders POS is a local desktop system built for a real trading business, combining point-of-sale operations with customer ledgers, supplier payments, expenses, cashbook, and general ledger management.
-
-The interesting part isn't selling something through a screen. It's making sure that sale still makes sense when someone checks the books six months later.
-
-### The idea
-
-Most POS systems are built around the transaction: make the sale, print the receipt, move on.
-
-For a trading business, that's only the beginning.
-
-A sale changes a customer's balance. A payment changes the ledger. A return reverses part of a transaction. An expense affects the books. Every one of those actions has consequences somewhere else in the system.
-
-Cheema Traders POS was built around keeping those relationships intact.</p>
+                <p class="dev-log-p">A desktop POS and accounting system for a business that doesn't get to be wrong about money.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">Cheema Traders POS is a local desktop system built for a real trading business, combining point-of-sale operations with customer ledgers, supplier payments, expenses, cashbook, and general ledger management.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">The interesting part isn't selling something through a screen. It's making sure that sale still makes sense when someone checks the books six months later.</p>
+                <h6 class="dev-log-h6" style="margin: 14px 0 6px 0; color: #ffb000; font-size: 11px; text-transform: uppercase; font-family: var(--font-pixel);">The idea</h6>
+                <p class="dev-log-p">Most POS systems are built around the transaction: make the sale, print the receipt, move on.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">For a trading business, that's only the beginning.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">A sale changes a customer's balance. A payment changes the ledger. A return reverses part of a transaction. An expense affects the books. Every one of those actions has consequences somewhere else in the system.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">Cheema Traders POS was built around keeping those relationships intact.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
@@ -2108,27 +2106,25 @@ That means accounting software needs a different mindset from ordinary CRUD appl
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">STILL BEING WORKED ON</div>
-                <p class="dev-log-p" style="white-space: pre-line;">The project has already gone through a number of accounting-specific corrections.
-
-Full invoice voiding had to be replaced with proper partial-return handling.
-
-Core financial operations had to be converted to atomic transactions after discovering potential ledger desynchronization.
-
-Deletion logic became complicated enough to earn its own DELETION_BACKLOG.md, documenting how different records should reverse their accounting effects instead of simply disappearing.
-
-And the cached-balance versus live-Outstanding-DR discrepancy is still an open structural issue being investigated.
-
-Basically, the accounting bugs don't care how clean the UI looks.
-
-### The fun bit
-
-There is literally a file called DELETION_BACKLOG.md.
-
-It exists because deleting something in an accounting system isn't really deleting it.
-
-If a payment disappears, its ledger effect has to disappear correctly too. If an expense is removed, the corresponding accounting entries need to be reversed. Eventually there were enough edge cases that the solution became: write down the rules so future-me stops inventing new versions of accounting logic.
-
-It's probably the least glamorous file in the project and one of the most important.</p>
+                <p class="dev-log-p">The project has already gone through a number of accounting-specific corrections.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">Full invoice voiding had to be replaced with proper partial-return handling.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">Core financial operations had to be converted to atomic transactions after discovering potential ledger desynchronization.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">Deletion logic became complicated enough to earn its own DELETION_BACKLOG.md, documenting how different records should reverse their accounting effects instead of simply disappearing.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">And the cached-balance versus live-Outstanding-DR discrepancy is still an open structural issue being investigated.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">Basically, the accounting bugs don't care how clean the UI looks.</p>
+                <h6 class="dev-log-h6" style="margin: 14px 0 6px 0; color: #ffb000; font-size: 11px; text-transform: uppercase; font-family: var(--font-pixel);">The fun bit</h6>
+                <p class="dev-log-p">There is literally a file called DELETION_BACKLOG.md.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">It exists because deleting something in an accounting system isn't really deleting it.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">If a payment disappears, its ledger effect has to disappear correctly too. If an expense is removed, the corresponding accounting entries need to be reversed. Eventually there were enough edge cases that the solution became: write down the rules so future-me stops inventing new versions of accounting logic.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">It's probably the least glamorous file in the project and one of the most important.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">FUTURE WORK</div>
@@ -2165,21 +2161,19 @@ The core POS, ledger, accounting, payment, expense, and reversal workflows are i
               <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">PROJECT OVERVIEW</div>
-                <p class="dev-log-p" style="white-space: pre-line;">A business management system built to replace spreadsheets with something that actually remembers what happened.
-
-River View ERP is a custom management system built for a housing society to move its day-to-day operations away from scattered Excel files and into one connected system.
-
-It brings member records, plot information, utility billing, ledgers, complaints, bookings, and administrative operations into a single place — while keeping the system practical enough for the people who actually have to use it.
-
-### The idea
-
-The problem wasn't that the society didn't have data.
-
-It had too much of it, spread across too many places.
-
-Records lived in spreadsheets, billing involved manual calculations, and keeping historical information consistent became increasingly difficult as the number of houses grew.
-
-River View was built around a simpler idea: one system should know what happened, when it happened, and what the current state is.</p>
+                <p class="dev-log-p">A business management system built to replace spreadsheets with something that actually remembers what happened.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">River View ERP is a custom management system built for a housing society to move its day-to-day operations away from scattered Excel files and into one connected system.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">It brings member records, plot information, utility billing, ledgers, complaints, bookings, and administrative operations into a single place — while keeping the system practical enough for the people who actually have to use it.</p>
+                <h6 class="dev-log-h6" style="margin: 14px 0 6px 0; color: #ffb000; font-size: 11px; text-transform: uppercase; font-family: var(--font-pixel);">The idea</h6>
+                <p class="dev-log-p">The problem wasn't that the society didn't have data.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">It had too much of it, spread across too many places.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">Records lived in spreadsheets, billing involved manual calculations, and keeping historical information consistent became increasingly difficult as the number of houses grew.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">River View was built around a simpler idea: one system should know what happened, when it happened, and what the current state is.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
@@ -2272,23 +2266,21 @@ The core management and billing systems are in place, with ongoing work focused 
               <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">PROJECT OVERVIEW</div>
-                <p class="dev-log-p" style="white-space: pre-line;">A football prediction engine built to argue with people about the 2026 World Cup.
-
-ORACLE-26 is a statistical football prediction engine built specifically around the 2026 World Cup and its expanded 48-team format.
-
-It takes historical results, team strength, rankings, market value, recent form, lineups, and injuries and turns them into estimated win, draw, and loss probabilities.
-
-The goal isn't to predict football perfectly. It's to put some actual numbers behind the arguments people make about it.
-
-### The idea
-
-I didn't start with a general-purpose prediction model and look for somewhere to use it.
-
-The 2026 World Cup was the reason to build it.
-
-The expanded tournament, different stages, changing squads, and constantly updating team information all became part of the architecture. The model is designed around the tournament rather than football prediction in the abstract.
-
-And yes, part of the motivation was being able to answer "Argentina are obviously better than Morocco" with something slightly more useful than "trust me bro."</p>
+                <p class="dev-log-p">A football prediction engine built to argue with people about the 2026 World Cup.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">ORACLE-26 is a statistical football prediction engine built specifically around the 2026 World Cup and its expanded 48-team format.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">It takes historical results, team strength, rankings, market value, recent form, lineups, and injuries and turns them into estimated win, draw, and loss probabilities.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">The goal isn't to predict football perfectly. It's to put some actual numbers behind the arguments people make about it.</p>
+                <h6 class="dev-log-h6" style="margin: 14px 0 6px 0; color: #ffb000; font-size: 11px; text-transform: uppercase; font-family: var(--font-pixel);">The idea</h6>
+                <p class="dev-log-p">I didn't start with a general-purpose prediction model and look for somewhere to use it.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">The 2026 World Cup was the reason to build it.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">The expanded tournament, different stages, changing squads, and constantly updating team information all became part of the architecture. The model is designed around the tournament rather than football prediction in the abstract.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">And yes, part of the motivation was being able to answer "Argentina are obviously better than Morocco" with something slightly more useful than "trust me bro."</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
@@ -2472,17 +2464,15 @@ It is still an experimental prediction system rather than a finished scientific 
               <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">PROJECT OVERVIEW</div>
-                <p class="dev-log-p" style="white-space: pre-line;">Pace is a personal productivity dashboard for notes, habits, projects, timers, and calendar — designed to work instantly offline and quietly sync when a connection comes back.
-
-The slightly obsessive part is underneath: the device is the primary source of truth. The cloud is basically a backup that catches up later.
-
-### The idea
-
-Most productivity apps assume you’re permanently online. Pace doesn’t.
-
-Every action is written locally first, so checking a habit, starting a timer, or editing a project works exactly the same with a connection or without one. Sync happens in the background when it can.
-
-And because apparently a normal productivity app wasn't strange enough, the UI also has Pokémon dropping mildly existential thoughts while you get things done.</p>
+                <p class="dev-log-p">Pace is a personal productivity dashboard for notes, habits, projects, timers, and calendar — designed to work instantly offline and quietly sync when a connection comes back.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">The slightly obsessive part is underneath: the device is the primary source of truth. The cloud is basically a backup that catches up later.</p>
+                <h6 class="dev-log-h6" style="margin: 14px 0 6px 0; color: #ffb000; font-size: 11px; text-transform: uppercase; font-family: var(--font-pixel);">The idea</h6>
+                <p class="dev-log-p">Most productivity apps assume you’re permanently online. Pace doesn’t.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">Every action is written locally first, so checking a habit, starting a timer, or editing a project works exactly the same with a connection or without one. Sync happens in the background when it can.</p>
+                <div style="height: 8px;"></div>
+                <p class="dev-log-p">And because apparently a normal productivity app wasn't strange enough, the UI also has Pokémon dropping mildly existential thoughts while you get things done.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>

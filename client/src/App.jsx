@@ -305,6 +305,41 @@ function App() {
     });
   };
 
+  const renderDevLogText = (text) => {
+    if (!text) return null;
+    const lines = text.split('\n');
+    return lines.map((line, idx) => {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('###')) {
+        const headingText = trimmed.replace(/^###\s*/, '');
+        return (
+          <h6 key={idx} className="dev-log-h6" style={{ margin: '14px 0 6px 0', color: '#ffb000', fontSize: '11px', textTransform: 'uppercase', fontFamily: 'var(--font-pixel)' }}>
+            {headingText}
+          </h6>
+        );
+      }
+      if (trimmed === '') {
+        return <div key={idx} style={{ height: '8px' }} />;
+      }
+
+      // Process inline **bold** text
+      const parts = line.split('**');
+      const content = parts.map((part, i) => {
+        if (i % 2 === 1) {
+          return <strong key={i}>{part}</strong>;
+        }
+        return part;
+      });
+
+      return (
+        <p key={idx} className="dev-log-p" style={{ margin: '0 0 4px 0', lineHeight: '1.6' }}>
+          {content}
+        </p>
+      );
+    });
+  };
+
+
   const sectionIds = ['profile', 'education', 'stats', 'work', 'projects', 'side-quests', 'contact'];
 
   const tagClasses = {
@@ -764,7 +799,7 @@ function App() {
               <div className="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">PROJECT OVERVIEW</div>
-                <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.overview || ''}</p>
+                {renderDevLogText(selectedProject.overview || '')}
               </div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">TECHNICAL ARCHITECTURE</div>
@@ -774,7 +809,7 @@ function App() {
               </div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">TECHNOLOGY STACK</div>
-                <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.tech_stack || ''}</p>
+                {renderDevLogText(selectedProject.tech_stack || '')}
               </div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">KEY FEATURES</div>
@@ -784,38 +819,38 @@ function App() {
               </div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">ENGINEERING CHALLENGES</div>
-                <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.challenges || ''}</p>
+                {renderDevLogText(selectedProject.challenges || '')}
               </div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">DESIGN DECISIONS</div>
-                <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.decisions || ''}</p>
+                {renderDevLogText(selectedProject.decisions || '')}
               </div>
               {selectedProject.performance && (
                 <div className="dev-log-section">
                   <div className="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
-                  <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.performance}</p>
+                  {renderDevLogText(selectedProject.performance)}
                 </div>
               )}
               <div className="dev-log-section">
                 <div className="dev-log-h5">WHAT I LEARNED</div>
-                <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.learnings || ''}</p>
+                {renderDevLogText(selectedProject.learnings || '')}
               </div>
               {selectedProject.still_working && (
                 <div className="dev-log-section">
                   <div className="dev-log-h5">STILL BEING WORKED ON</div>
-                  <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.still_working}</p>
+                  {renderDevLogText(selectedProject.still_working)}
                 </div>
               )}
               {selectedProject.future_work && (
                 <div className="dev-log-section">
                   <div className="dev-log-h5">FUTURE WORK</div>
-                  <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.future_work}</p>
+                  {renderDevLogText(selectedProject.future_work)}
                 </div>
               )}
               {selectedProject.status_detail && (
                 <div className="dev-log-section">
                   <div className="dev-log-h5">STATUS DETAIL</div>
-                  <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.status_detail}</p>
+                  {renderDevLogText(selectedProject.status_detail)}
                 </div>
               )}
             </div>
