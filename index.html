@@ -28,7 +28,7 @@
       --px:            4px;
       --font-pixel:    'Press Start 2P', monospace;
       --font-mono:     'Silkscreen', monospace;
-      --header-h:      56px;
+      --header-h:      68px;
       --console-h:     172px;
     }
 
@@ -258,8 +258,10 @@
     .top-header .wrap {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       width: 100%;
+      height: 100%;
+      position: relative;
     }
 
     .brand {
@@ -362,11 +364,11 @@
 
     .top-nav a {
       font-family: var(--font-pixel);
-      font-size: 9px;
+      font-size: 11px;
       letter-spacing: 0;
       text-decoration: none;
       color: var(--text-dim);
-      padding: 6px 8px;
+      padding: 10px 14px;
       border: 2px solid transparent;
       transition: color 100ms ease, border-color 100ms ease;
     }
@@ -388,13 +390,16 @@
     }
 
     .header-status {
+      position: absolute;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
       display: flex;
       align-items: center;
       gap: 6px;
       font-family: var(--font-pixel);
       font-size: 8px;
       color: var(--green);
-      margin-left: 12px;
     }
 
     .header-status .status-text {
@@ -1769,9 +1774,7 @@
         <!-- ================= TOP HEADER (desktop) ================= -->
         <header class="top-header">
           <div class="wrap">
-            <a class="brand" href="#hero" title="Scroll to top">
-              <span class="pill-badge pill-badge--left">S</span>
-            </a>
+
       <nav class="top-nav" id="top-nav">
         <a href="#profile" data-section="profile">Profile</a>
         <a href="#education" data-section="education">Education</a>
@@ -2017,8 +2020,7 @@
               <h3>Cheema Traders POS</h3>
               <span class="cart-tag cart-tag--live">LIVE</span>
             </div>
-            <p>Electron + SQLite point of sale. Atomic write paths across sales, payments and expenses, with an inline
-              GL ledger, Excel/PDF export and a standardized delete-with-reversal pattern.</p>
+            <p>A desktop POS and accounting system for a business that doesn't get to be wrong about money.</p>
             <div class="chip-row"><span class="chip">Electron</span><span class="chip">SQLite</span></div>
             <a href="index.html?project=cheema-traders-pos" target="_blank"
               class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶
@@ -2027,58 +2029,124 @@
               <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">PROJECT OVERVIEW</div>
-                <p class="dev-log-p">An offline-first desktop Point of Sale (POS) solution built for Cheema Traders to
-                  manage sales, expenses, inventory, and dual-ledger accounts.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">A desktop POS and accounting system for a business that doesn't get to be wrong about money.
+
+Cheema Traders POS is a local desktop system built for a real trading business, combining point-of-sale operations with customer ledgers, supplier payments, expenses, cashbook, and general ledger management.
+
+The interesting part isn't selling something through a screen. It's making sure that sale still makes sense when someone checks the books six months later.
+
+### The idea
+
+Most POS systems are built around the transaction: make the sale, print the receipt, move on.
+
+For a trading business, that's only the beginning.
+
+A sale changes a customer's balance. A payment changes the ledger. A return reverses part of a transaction. An expense affects the books. Every one of those actions has consequences somewhere else in the system.
+
+Cheema Traders POS was built around keeping those relationships intact.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
                 <ul class="dev-log-list">
-                  <li><strong>System Architecture:</strong> Desktop client shell isolating local system calls.</li>
-                  <li><strong>Backend:</strong> Electron main process managing configuration, file exports, and database
-                    persistence.</li>
-                  <li><strong>Frontend:</strong> React renderer UI with custom styling.</li>
-                  <li><strong>Database:</strong> SQLite database embedded locally within user data storage.</li>
-                  <li><strong>APIs &amp; Auth:</strong> Fully local, no external APIs. File protection rules applied.
-                  </li>
-                  <li><strong>Deployment:</strong> Packaged native installers generated via Electron builder.</li>
+                  <li><strong>Electron:</strong> Native desktop runtime wrapping the desktop application interface.</li>
+                  <li><strong>SQLite:</strong> Local database engine running directly on-device with zero internet dependencies.</li>
+                  <li><strong>Transactional Write Layer:</strong> Ensures sales, payments, and expenses commit atomically or roll back entirely.</li>
+                  <li><strong>Connected Ledgers:</strong> Keeps general ledger, cashbook, and supplier records bound to transactions.</li>
                 </ul>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNOLOGY STACK</div>
-                <p class="dev-log-p">Electron, SQLite, JavaScript, HTML5, CSS3, ExcelJS, PDFKit.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">Electron · SQLite · better-sqlite3 · JavaScript</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">KEY FEATURES</div>
                 <ul class="dev-log-list">
-                  <li><strong>Dual-Ledger Accounting:</strong> Real-time balancing tracking customer and supplier
-                    transactions.</li>
-                  <li><strong>General Ledger Panel:</strong> Inline summaries with Excel sheet and PDF invoice
-                    exporters.</li>
-                  <li><strong>Delete-with-Reversal:</strong> Enforces account transparency by requiring reversal items
-                    instead of database deletions.</li>
+                  <li><strong>Dual-Ledger Accounting:</strong> Tracks custom outstanding DR balances against live cashbooks.</li>
+                  <li><strong>Reversals System:</strong> Deletes use transparent accounting reversal offsets instead of purging database rows.</li>
+                  <li><strong>General Ledger Reporting:</strong> Native summaries with Excel/PDF layout exporters.</li>
                 </ul>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
-                <p class="dev-log-p">Encountered silent general-ledger (GL) desync bugs during concurrent ledger
-                  updates. Solved by refactoring the sales, customer payments, supplier payments, and expense write
-                  paths into database-level atomic transactions, ensuring database queries commit fully or rollback
-                  entirely.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">Financial bugs are particularly nasty because they don't necessarily crash anything.
+
+A UI bug is visible.
+
+A ledger being wrong by a few thousand rupees can quietly sit there until someone notices that the numbers don't reconcile.
+
+During auditing, the system uncovered issues including double-counting in Total Paid calculations and a structural difference between the cached customer balance and the live-calculated Outstanding DR figure.
+
+Those weren't application crashes.
+
+They were numbers that looked perfectly reasonable until someone actually questioned them.
+
+That changed how the system is being developed: financial correctness has to be actively tested and audited rather than assumed because the application runs.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">DESIGN DECISIONS</div>
-                <p class="dev-log-p">Opted for an embedded SQLite database inside an Electron shell to eliminate
-                  dependency on unstable internet connections in retail zones, guaranteeing 100% operational uptime.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">Electron → better-sqlite3 → SQLite
+
+The application is deliberately local-first.
+
+Sales, payments, expenses, and ledger operations happen directly against the local database, without a network request sitting between the user and the transaction.
+
+That makes the system simple to deploy for a single-location business while also eliminating an entire category of internet and server dependency.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
-                <p class="dev-log-p">Indexed SQLite primary transaction tables, keeping query retrieval times below 10ms
-                  for up to 100,000 ledger records.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">Indexed SQLite primary transaction tables, keeping query retrieval times below 10ms for up to 100,000 ledger records.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">WHAT I LEARNED</div>
-                <p class="dev-log-p">Acquired deep insight into data integrity practices. Enforcing strict validation
-                  rules on the database-level is superior to managing logic purely on the frontend wrapper.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">Building this system made one thing painfully clear:
+
+A successful transaction isn't the same thing as a correct transaction.
+
+The application can save the sale, print the invoice, and return a green success message while the books are quietly wrong somewhere underneath.
+
+That means accounting software needs a different mindset from ordinary CRUD applications. Transactions need invariants. Reversals need rules. Historical data needs protection. And sometimes the most important feature is an audit that tells you your own software was wrong.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">STILL BEING WORKED ON</div>
+                <p class="dev-log-p" style="white-space: pre-line;">The project has already gone through a number of accounting-specific corrections.
+
+Full invoice voiding had to be replaced with proper partial-return handling.
+
+Core financial operations had to be converted to atomic transactions after discovering potential ledger desynchronization.
+
+Deletion logic became complicated enough to earn its own DELETION_BACKLOG.md, documenting how different records should reverse their accounting effects instead of simply disappearing.
+
+And the cached-balance versus live-Outstanding-DR discrepancy is still an open structural issue being investigated.
+
+Basically, the accounting bugs don't care how clean the UI looks.
+
+### The fun bit
+
+There is literally a file called DELETION_BACKLOG.md.
+
+It exists because deleting something in an accounting system isn't really deleting it.
+
+If a payment disappears, its ledger effect has to disappear correctly too. If an expense is removed, the corresponding accounting entries need to be reversed. Eventually there were enough edge cases that the solution became: write down the rules so future-me stops inventing new versions of accounting logic.
+
+It's probably the least glamorous file in the project and one of the most important.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">FUTURE WORK</div>
+                <p class="dev-log-p" style="white-space: pre-line;">The next stage is focused heavily on auditing and financial consistency rather than simply adding more screens.
+
+That includes resolving the cached-balance/live-balance discrepancy, strengthening reconciliation tools, expanding automated tests around accounting invariants, and continuing to audit reversal and transaction paths.
+
+There is also room for deeper reporting, forecasting, multi-shop capabilities, and additional inventory functionality as the operational requirements grow.
+
+The principle stays the same: new features shouldn't make the underlying financial truth harder to verify.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">STATUS DETAIL</div>
+                <p class="dev-log-p" style="white-space: pre-line;">Production project · Actively used · Actively audited
+
+Cheema Traders POS is being used for real business operations and is still under active development and financial auditing.
+
+The core POS, ledger, accounting, payment, expense, and reversal workflows are in place. Current development is focused on hardening the system, finding discrepancies before they become business problems, and making the accounting layer increasingly difficult to get wrong.</p>
               </div>
             </div>
           </article>
@@ -2088,9 +2156,8 @@
               <h3>River View ERP</h3>
               <span class="cart-tag cart-tag--live">LIVE</span>
             </div>
-            <p>React + PostgreSQL ERP. Full financial-integrity audit, six confirmed bugs resolved, plus a
-              discount/amnesty scheme with a context-aware payment modal.</p>
-            <div class="chip-row"><span class="chip">React</span><span class="chip">PostgreSQL</span></div>
+            <p>A business management system built to replace spreadsheets with something that actually remembers what happened.</p>
+            <div class="chip-row"><span class="chip">React</span><span class="chip">Vite</span><span class="chip">Node.js</span><span class="chip">Express</span><span class="chip">MongoDB</span></div>
             <a href="index.html?project=river-view-erp" target="_blank"
               class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶
               VIEW CASE STUDY</a>
@@ -2098,58 +2165,95 @@
               <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">PROJECT OVERVIEW</div>
-                <p class="dev-log-p">An Enterprise Resource Planning (ERP) platform for River View real estate, tracking
-                  plot installment scheduling, late fee structures, and billing details.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">A business management system built to replace spreadsheets with something that actually remembers what happened.
+
+River View ERP is a custom management system built for a housing society to move its day-to-day operations away from scattered Excel files and into one connected system.
+
+It brings member records, plot information, utility billing, ledgers, complaints, bookings, and administrative operations into a single place — while keeping the system practical enough for the people who actually have to use it.
+
+### The idea
+
+The problem wasn't that the society didn't have data.
+
+It had too much of it, spread across too many places.
+
+Records lived in spreadsheets, billing involved manual calculations, and keeping historical information consistent became increasingly difficult as the number of houses grew.
+
+River View was built around a simpler idea: one system should know what happened, when it happened, and what the current state is.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
                 <ul class="dev-log-list">
-                  <li><strong>System Architecture:</strong> Dynamic single-page client coupled with a RESTful server.
-                  </li>
-                  <li><strong>Backend:</strong> Django REST framework managing data serialization and payment
-                    processing.</li>
-                  <li><strong>Frontend:</strong> React client with a responsive modular layout.</li>
-                  <li><strong>Database:</strong> PostgreSQL engine tracking plot indices and user accounts.</li>
-                  <li><strong>APIs &amp; Auth:</strong> JSON Web Tokens (JWT) for secure REST API endpoints
-                    authentication.</li>
-                  <li><strong>Deployment:</strong> Containerized REST server deployed via Railway.</li>
+                  <li><strong>React + Vite:</strong> Modern fast client-side administrative interface.</li>
+                  <li><strong>Node.js + Express:</strong> Backend REST API owning business rules, calculations, and security.</li>
+                  <li><strong>MongoDB:</strong> Flexible document storage for members, plots, bills, bookings, and complaints.</li>
+                  <li><strong>JWT + bcrypt:</strong> Secure role-based authorization for administrators and members.</li>
+                  <li><strong>Local-first Deployment:</strong> Set up initially on-premise on the society's own infrastructure.</li>
                 </ul>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNOLOGY STACK</div>
-                <p class="dev-log-p">React, Python, Django, PostgreSQL, Tailwind CSS, Docker, Railway.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">React · Vite · Tailwind CSS · Node.js · Express · MongoDB · JWT</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">KEY FEATURES</div>
                 <ul class="dev-log-list">
-                  <li><strong>Installment Matrices:</strong> Dynamic payment schedule sheets indicating upcoming billing
-                    plans.</li>
-                  <li><strong>Discount / Amnesty Engine:</strong> Highly configurable scheme allowing exclusions on a
-                    per-plot basis.</li>
-                  <li><strong>Context-Aware Payments:</strong> UI modal matching payment entries against real-time
-                    ledger validations.</li>
+                  <li><strong>Member &amp; Plot Records:</strong> Centralized, synchronized profiles for houses and residents.</li>
+                  <li><strong>Utility Billing Engine:</strong> Automatically tracks monthly bills, late fees, and arrears.</li>
+                  <li><strong>Unified Ledger:</strong> Connects society cash flows and outstanding balances dynamically.</li>
                 </ul>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
-                <p class="dev-log-p">Ledger integrity bugs causing orphaned payment logs and trial-balance
-                  discrepancies. Conducted a complete audit and corrected six confirmed bugs by adding constraints and
-                  foreign key triggers on PostgreSQL schemas.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">The most important engineering challenge was financial integrity.
+
+When you're building a normal CRUD application, changing a record is usually straightforward.
+
+When that record represents money someone already paid, it becomes a very different problem.
+
+River View therefore had to distinguish between current calculations and historical truth. Reconciliation became a separate operation rather than something that happens invisibly whenever data changes.
+
+That led to preview/dry-run behaviour, protection for settled records, and explicit handling of edge cases such as deleted plots and partially generated bills.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">DESIGN DECISIONS</div>
-                <p class="dev-log-p">Selected PostgreSQL over NoSQL to handle complex transactional ledger queries that
-                  require strict schema enforcement and multi-table ACID guarantees.</p>
-              </div>
-              <div class="dev-log-section">
-                <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
-                <p class="dev-log-p">Utilized PG connection poolers, ensuring heavy installment ledger reports execute
-                  in under 1.5 seconds under high concurrent user loads.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">React → Express API → MongoDB
+
+The frontend handles the operational interface, while the backend owns business rules and data integrity.
+
+Authentication and permissions sit between the user and the underlying records, with separate member and administrator capabilities.
+
+The system is designed around roughly 1,000 houses, with the initial deployment focused on local infrastructure and reliability rather than unnecessary cloud complexity.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">WHAT I LEARNED</div>
-                <p class="dev-log-p">Learned that complex scheduling systems require automated ledger reconciliation
-                  tests to guarantee balance sheet accuracy.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">ERP software is less about having a lot of screens and more about preserving the relationship between things.
+
+A bill isn't just a bill. It's connected to a house, a member, a month, previous arrears, payments, adjustments, and an eventual financial history.
+
+Once those relationships matter, the job stops being "build a dashboard" and becomes "make sure the system doesn't lie."</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">STILL BEING WORKED ON</div>
+                <p class="dev-log-p" style="white-space: pre-line;">The billing system went through several iterations because some seemingly harmless recalculation logic could mutate historical bills.
+
+There were also the usual problems that appear when a system moves from development into actual deployment: database paths, local infrastructure, authentication edge cases, and keeping generated billing data consistent across different parts of the application.
+
+Those problems ended up shaping the architecture more than the original feature list did.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">FUTURE WORK</div>
+                <p class="dev-log-p" style="white-space: pre-line;">Future development is focused on expanding the administrative tooling, improving reporting and financial visibility, strengthening billing reconciliation, and making the system easier for society staff to operate without technical assistance.
+
+The broader goal is to turn what started as a replacement for spreadsheets into a dependable operational system for the society — one that can handle the boring, repetitive, financially important work without requiring someone to remember which Excel file contains the latest version.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">STATUS DETAIL</div>
+                <p class="dev-log-p" style="white-space: pre-line;">Production project · Actively maintained
+
+River View ERP is built around a real operational use case rather than as a portfolio demo.
+
+The core management and billing systems are in place, with ongoing work focused on reliability, reconciliation, reporting, and the edge cases that only become visible once software starts dealing with real records and real money.</p>
               </div>
             </div>
           </article>
@@ -2159,10 +2263,8 @@
               <h3>ORACLE-26</h3>
               <span class="cart-tag cart-tag--run">RUNNING</span>
             </div>
-            <p>Dixon-Coles-corrected Poisson model with opponent-adjusted lambdas and live-form data. ~61% accuracy
-              across 82+ matches, Brier score ~0.54, five scheduled GitHub Actions scrapers.</p>
-            <div class="chip-row"><span class="chip">Python</span><span class="chip">GitHub Actions</span><span
-                class="chip">mutmut</span></div>
+            <p>A football prediction engine built to argue with people about the 2026 World Cup.</p>
+            <div class="chip-row"><span class="chip">Python</span><span class="chip">GitHub Actions</span><span class="chip">mutmut</span></div>
             <a href="index.html?project=oracle-26" target="_blank"
               class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶
               VIEW CASE STUDY</a>
@@ -2170,55 +2272,119 @@
               <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">PROJECT OVERVIEW</div>
-                <p class="dev-log-p">A statistical football match prediction engine evaluating match win/draw
-                  probabilities using live league histories and Dixon-Coles time-decay weights.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">A football prediction engine built to argue with people about the 2026 World Cup.
+
+ORACLE-26 is a statistical football prediction engine built specifically around the 2026 World Cup and its expanded 48-team format.
+
+It takes historical results, team strength, rankings, market value, recent form, lineups, and injuries and turns them into estimated win, draw, and loss probabilities.
+
+The goal isn't to predict football perfectly. It's to put some actual numbers behind the arguments people make about it.
+
+### The idea
+
+I didn't start with a general-purpose prediction model and look for somewhere to use it.
+
+The 2026 World Cup was the reason to build it.
+
+The expanded tournament, different stages, changing squads, and constantly updating team information all became part of the architecture. The model is designed around the tournament rather than football prediction in the abstract.
+
+And yes, part of the motivation was being able to answer "Argentina are obviously better than Morocco" with something slightly more useful than "trust me bro."</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
                 <ul class="dev-log-list">
-                  <li><strong>System Architecture:</strong> Automation-driven batch computation pipeline.</li>
-                  <li><strong>Backend:</strong> Python engine executing SciPy Poisson probability calculators.</li>
-                  <li><strong>Frontend:</strong> Automatically updated markdown stats logs in git repositories.</li>
-                  <li><strong>Database:</strong> High-performance local Pandas dataframes.</li>
-                  <li><strong>APIs:</strong> Python requests scrapers pulling real-time football score feeds.</li>
-                  <li><strong>Deployment:</strong> Runs on scheduled crons via GitHub Actions workflow triggers.</li>
+                  <li><strong>Python Scrapers:</strong> Scheduled scrapers collect fixtures, squads, lineups, match results, and injuries.</li>
+                  <li><strong>Pandas &amp; NumPy:</strong> Data ingestion, feature preparation, and statistical processing.</li>
+                  <li><strong>Prediction Engine (engine.js):</strong> The core prediction engine written in JavaScript, isolated from the scraping pipeline.</li>
+                  <li><strong>GitHub Actions:</strong> Scheduled cron jobs execute predictions and commit updates directly to Git history.</li>
+                  <li><strong>Evaluation:</strong> Continuous backtesting and Brier score tracking.</li>
                 </ul>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNOLOGY STACK</div>
-                <p class="dev-log-p">Python, SciPy, Pandas, NumPy, GitHub Actions, mutmut.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">Python · SciPy · Pandas · NumPy · JavaScript · GitHub Actions</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">KEY FEATURES</div>
                 <ul class="dev-log-list">
-                  <li><strong>Dixon-Coles Engine:</strong> Advanced Poisson distributions adjusting team strength
-                    parameters based on timeline weights.</li>
-                  <li><strong>Automated Ingestion:</strong> Five scheduled scrapers collecting match histories and
-                    player card stats dynamically.</li>
-                  <li><strong>Brier Evaluator:</strong> Automated error monitoring reporting a Brier score of ~0.54.
-                  </li>
+                  <li><strong>Five Independent Scrapers:</strong> Resilient data collection so a single broken source does not halt the pipeline.</li>
+                  <li><strong>Dixon-Coles Low-Score Correction:</strong> Adjusts standard Poisson limits for low-scoring match outcomes.</li>
+                  <li><strong>Git-Backed Pipeline:</strong> Git commits act as the prediction audit logs without database server costs.</li>
                 </ul>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
-                <p class="dev-log-p">Mitigating silent regressions in predictive probability math. Resolved by adopting
-                  mutation testing (via mutmut), achieving a ~70% mutation score to verify that mathematical equations
-                  handle parameters without breaking.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">The biggest engineering problem wasn't getting the model to run.
+
+It was making sure the maths didn't quietly become wrong.
+
+A normal software bug usually crashes something. Statistical bugs can happily return perfectly valid numbers while being completely incorrect.
+
+That's why ORACLE-26 uses mutation testing with mutmut. The test suite deliberately introduces small mathematical changes — flipped signs, altered constants, changed operators — and checks whether the tests notice.
+
+Current mutation coverage is roughly 70%, which also means roughly 30% of those injected changes can still slip through.
+
+That's not something I'm hiding behind a percentage. It's one of the areas the project still needs to improve.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">DESIGN DECISIONS</div>
-                <p class="dev-log-p">Deployed on GitHub Actions rather than a continuous active web server, cutting
-                  operating expenses to zero while executing scheduled runs reliably.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">Python Scrapers → Pandas → Prediction Engine → Probability Matrix → Evaluation → Git History
+
+The system runs as a scheduled batch pipeline.
+
+Scrapers collect the latest available information, the engine recalculates team strength and score probabilities, and the resulting predictions and statistics are committed back into the repository.
+
+No server sitting around waiting for requests. Just a scheduled job waking up, doing the maths, and going back to sleep.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
-                <p class="dev-log-p">Refactored Scipy arrays, dropping match evaluation times down to under 50ms per
-                  match history calculation block.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">The model currently sits around 61% outcome accuracy across 82+ matches, with a Brier score around 0.54.
+
+The Brier score is particularly important because accuracy alone can make a prediction model look better than it really is. It measures how well the probabilities themselves are calibrated — not just whether the final predicted outcome happened to be correct.
+
+The model has useful signal.
+
+It is also very much not a football oracle.
+
+Hence the name.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">WHAT I LEARNED</div>
-                <p class="dev-log-p">Mutation testing is a critical tool for statistical codebases, finding missing
-                  tests and logic flaws that standard coverage metrics fail to flag.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">Building a statistical system taught me something that ordinary application development doesn't make obvious:
+
+A program returning a number doesn't mean the number deserves to exist.
+
+The hardest part isn't making the model calculate. It's deciding whether the assumptions, data, probabilities, and evaluation around that calculation are actually trustworthy.
+
+That's where most of the interesting engineering in ORACLE-26 ended up.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">STILL BEING WORKED ON</div>
+                <p class="dev-log-p" style="white-space: pre-line;">The project has had its share of wonderfully stupid bugs.
+
+At one point the Dixon-Coles implementation wasn't actually implementing Dixon-Coles correctly and was effectively giving draws a flat boost. That was removed in favour of the proper low-score correction.
+
+There are also incomplete historical rating values in the current static dataset, including missing elo_delta_90 data for Scotland and several other teams. That can propagate NaN values into parts of the momentum calculation and is still on the cleanup list.
+
+And yes, there was also a complete index.html rewrite that got reverted.
+
+Git remembers everything.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">FUTURE WORK</div>
+                <p class="dev-log-p" style="white-space: pre-line;">The next stage is less about adding random complexity and more about making the model harder to fool.
+
+Planned work includes better historical data coverage, stronger injury and lineup weighting, improved mutation-test coverage, more rigorous backtesting, better probability calibration, and continued refinement of the World Cup stage-specific modifiers.
+
+The long-term goal is to move from a model that can produce interesting predictions to one that can explain why it believes a prediction is likely — and quantify how confident it should actually be.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">STATUS DETAIL</div>
+                <p class="dev-log-p" style="white-space: pre-line;">Live · Actively developing
+
+ORACLE-26 is deployed and continuously updated through scheduled data pipelines.
+
+It is still an experimental prediction system rather than a finished scientific model — which is kind of the point. The project is as much about learning how to build, test, evaluate, and break statistical systems as it is about predicting who wins the World Cup.</p>
               </div>
             </div>
           </article>
@@ -2297,10 +2463,8 @@
               <h3>Pace</h3>
               <span class="cart-tag cart-tag--solo">PERSONAL</span>
             </div>
-            <p>Personal productivity app covering habits, notes, projects, timers and calendar, with a Supabase sync
-              layer built on last-write-wins and row-level security.</p>
-            <div class="chip-row"><span class="chip">React</span><span class="chip">Dexie</span><span
-                class="chip">Supabase</span></div>
+            <p>Offline-first productivity, built around the idea that the internet is optional.</p>
+            <div class="chip-row"><span class="chip">React</span><span class="chip">Dexie</span><span class="chip">Supabase</span></div>
             <a href="index.html?project=pace" target="_blank"
               class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶
               VIEW CASE STUDY</a>
@@ -2308,56 +2472,93 @@
               <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">PROJECT OVERVIEW</div>
-                <p class="dev-log-p">An offline-first personal dashboard coordinating notes, habits, calendars, and
-                  tasks with real-time cloud synchronization.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">Pace is a personal productivity dashboard for notes, habits, projects, timers, and calendar — designed to work instantly offline and quietly sync when a connection comes back.
+
+The slightly obsessive part is underneath: the device is the primary source of truth. The cloud is basically a backup that catches up later.
+
+### The idea
+
+Most productivity apps assume you’re permanently online. Pace doesn’t.
+
+Every action is written locally first, so checking a habit, starting a timer, or editing a project works exactly the same with a connection or without one. Sync happens in the background when it can.
+
+And because apparently a normal productivity app wasn't strange enough, the UI also has Pokémon dropping mildly existential thoughts while you get things done.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNICAL ARCHITECTURE</div>
                 <ul class="dev-log-list">
-                  <li><strong>System Architecture:</strong> Client-side database replicating changes to a cloud backend.
-                  </li>
-                  <li><strong>Database (Local):</strong> Dexie.js wrapping IndexedDB for offline persistence.</li>
-                  <li><strong>Database (Cloud):</strong> Supabase PostgreSQL instances with Row-Level Security.</li>
-                  <li><strong>Frontend:</strong> React client with a responsive interface.</li>
-                  <li><strong>APIs &amp; Auth:</strong> Supabase client libraries running WebSocket replication.</li>
-                  <li><strong>Deployment:</strong> Vercel static hosting.</li>
+                  <li><strong>React:</strong> Frontend and interaction layer, designed to feel closer to a native app than a traditional web dashboard.</li>
+                  <li><strong>Dexie.js + IndexedDB:</strong> The local database and immediate source of truth. Reads and writes happen on-device first.</li>
+                  <li><strong>Supabase + PostgreSQL:</strong> Cloud persistence with Row-Level Security keeping each user's data isolated at the database level.</li>
+                  <li><strong>Custom Sync Layer:</strong> Queued mutations, retries, timestamps, conflict resolution, and background replication between local and cloud state.</li>
+                  <li><strong>Vercel:</strong> Deployment and static hosting.</li>
                 </ul>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">TECHNOLOGY STACK</div>
-                <p class="dev-log-p">React, Dexie.js, IndexedDB, Supabase, Tailwind CSS, Vercel.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">React · Dexie.js · IndexedDB · Supabase · PostgreSQL · Tailwind CSS · Vercel</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">KEY FEATURES</div>
                 <ul class="dev-log-list">
-                  <li><strong>IndexedDB Persistence:</strong> Complete offline operation, keeping local user data
-                    instant.</li>
-                  <li><strong>Last-Write-Wins Sync:</strong> Timestamp conflict resolution rules on IndexedDB tables.
-                  </li>
-                  <li><strong>Row-Level Security:</strong> Strict Postgres rules ensuring users only edit their own
-                    records.</li>
+                  <li><strong>Local interactions resolve without waiting for a network request.</strong></li>
+                  <li><strong>Database-level Row-Level Security means user isolation isn't just a frontend assumption.</strong></li>
+                  <li><strong>Dates are serialized and restored carefully across the sync boundary.</strong></li>
+                  <li><strong>Deleted records are tracked rather than simply disappearing, allowing the sync layer to understand what actually changed.</strong></li>
+                  <li><strong>Conflicts are resolved automatically instead of becoming the user's problem.</strong></li>
                 </ul>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">ENGINEERING CHALLENGES</div>
-                <p class="dev-log-p">Syncing offline client edits without overwriting newer data. Built a timestamp
-                  resolution layer inside Dexie synchronization hooks, ensuring newer client edits persist while
-                  resolving conflicts automatically.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">The hardest part wasn't building the productivity modules. It was making two versions of the same data agree after one of them has been offline.
+
+Pace uses timestamp-based Last-Write-Wins conflict resolution. Local mutations are queued while offline, retried when connectivity returns, and reconciled against newer versions without interrupting the user.
+
+The UI never needs to know there was a fight.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">DESIGN DECISIONS</div>
-                <p class="dev-log-p">Chose Dexie.js for client storage to bypass local query lag, utilizing Supabase
-                  WebSockets as a lightweight backend sync layer.</p>
-              </div>
-              <div class="dev-log-section">
-                <div class="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
-                <p class="dev-log-p">Client transactions run locally in IndexedDB cache, resolving in under 50ms and
-                  syncing in the background once online.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">React → Dexie / IndexedDB → Sync Queue → Supabase / PostgreSQL
+
+Local state comes first. Cloud state catches up.
+
+Supabase's realtime capabilities handle communication, while the custom QueueManager handles mutations that need to wait, retry, or fail without blocking the rest of the application.</p>
               </div>
               <div class="dev-log-section">
                 <div class="dev-log-h5">WHAT I LEARNED</div>
-                <p class="dev-log-p">Offline-first application design is best implemented when data mutations are saved
-                  as sequential logs, making synchronization straightforward and predictable.</p>
+                <p class="dev-log-p" style="white-space: pre-line;">Offline-first isn't really about making an app work without Wi-Fi.
+
+It's about deciding what "truth" means when multiple versions of the same thing exist.
+
+Once every change becomes a local mutation that can be queued, replayed, compared, and reconciled, sync stops feeling like a separate feature and starts becoming part of the architecture itself.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">STILL BEING WORKED ON</div>
+                <p class="dev-log-p" style="white-space: pre-line;">Pace is deployed and used daily, but it isn't pretending to be finished.
+
+The current work is mostly around the awkward edges of the system: timezone and date-shifting bugs in habit tracking, occasional mobile layout regressions, authentication edge cases, stale environment configuration during deployment, and making the sync layer more resilient when records are changed in multiple places.
+
+There have also been the occasional bugs that sound completely unrelated until you remember everything is connected — a Tiptap editor crash, a broken habit heatmap, and the usual collection of small UI and state-management problems.
+
+They're not glamorous, but they're part of making the architecture reliable rather than just functional.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">FUTURE WORK</div>
+                <p class="dev-log-p" style="white-space: pre-line;">The next stages are focused on expanding Pace without compromising its local-first foundation.
+
+Planned work includes deeper calendar functionality, more powerful project and task management, richer habit analytics, improved sync diagnostics and recovery, stronger cross-device consistency, and continued refinement of the mobile experience.
+
+The goal isn't to keep adding modules forever. It's to make the existing system feel increasingly complete while keeping the original rule intact:
+
+Pace should remain useful even when the internet isn't.</p>
+              </div>
+              <div class="dev-log-section">
+                <div class="dev-log-h5">STATUS DETAIL</div>
+                <p class="dev-log-p" style="white-space: pre-line;">Shipped · Actively used daily
+
+Pace is fully deployed and in daily use as my primary productivity system.
+
+The core local-first architecture is complete, with calendar, habits, projects, timers, and notes all working offline-first and syncing in the background. Development now happens around refinement, new modules, and the less-visible engineering work that keeps local and cloud state from disagreeing.</p>
               </div>
             </div>
           </article>

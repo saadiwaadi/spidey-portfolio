@@ -14,7 +14,7 @@
       --px:            4px;
       --font-pixel:    'Press Start 2P', monospace;
       --font-mono:     'Silkscreen', monospace;
-      --header-h:      56px;
+      --header-h:      68px;
       --console-h:     172px;
     }
 
@@ -244,9 +244,10 @@
     .top-header .wrap {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       width: 100%;
       height: 100%;
+      position: relative;
     }
 
     .brand {
@@ -351,11 +352,11 @@
 
     .top-nav a {
       font-family: var(--font-pixel);
-      font-size: 9px;
+      font-size: 11px;
       letter-spacing: 0;
       text-decoration: none;
       color: var(--text-dim);
-      padding: 6px 8px;
+      padding: 10px 14px;
       border: 2px solid transparent;
       transition: color 100ms ease, border-color 100ms ease;
     }
@@ -377,13 +378,16 @@
     }
 
     .header-status {
+      position: absolute;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
       display: flex;
       align-items: center;
       gap: 6px;
       font-family: var(--font-pixel);
       font-size: 8px;
       color: var(--green);
-      margin-left: 12px;
     }
 
     .header-status .status-text {

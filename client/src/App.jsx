@@ -335,9 +335,7 @@ function App() {
             {/* TOP HEADER (desktop) */}
             <header className="top-header">
               <div className="wrap">
-                <div className="brand" onClick={() => jumpTo('hero')} style={{ cursor: 'pointer' }} title="Scroll to top">
-                  <span className="pill-badge pill-badge--left">S</span>
-                </div>
+
                 <nav className="top-nav" id="top-nav">
                   <a
                     href="#profile"
@@ -766,7 +764,7 @@ function App() {
               <div className="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">PROJECT OVERVIEW</div>
-                <p className="dev-log-p">{selectedProject.overview || ''}</p>
+                <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.overview || ''}</p>
               </div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">TECHNICAL ARCHITECTURE</div>
@@ -776,7 +774,7 @@ function App() {
               </div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">TECHNOLOGY STACK</div>
-                <p className="dev-log-p">{selectedProject.tech_stack || ''}</p>
+                <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.tech_stack || ''}</p>
               </div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">KEY FEATURES</div>
@@ -786,20 +784,40 @@ function App() {
               </div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">ENGINEERING CHALLENGES</div>
-                <p className="dev-log-p">{selectedProject.challenges || ''}</p>
+                <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.challenges || ''}</p>
               </div>
               <div className="dev-log-section">
                 <div className="dev-log-h5">DESIGN DECISIONS</div>
-                <p className="dev-log-p">{selectedProject.decisions || ''}</p>
+                <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.decisions || ''}</p>
               </div>
-              <div className="dev-log-section">
-                <div className="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
-                <p className="dev-log-p">{selectedProject.performance || ''}</p>
-              </div>
+              {selectedProject.performance && (
+                <div className="dev-log-section">
+                  <div className="dev-log-h5">PERFORMANCE &amp; SCALABILITY</div>
+                  <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.performance}</p>
+                </div>
+              )}
               <div className="dev-log-section">
                 <div className="dev-log-h5">WHAT I LEARNED</div>
-                <p className="dev-log-p">{selectedProject.learnings || ''}</p>
+                <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.learnings || ''}</p>
               </div>
+              {selectedProject.still_working && (
+                <div className="dev-log-section">
+                  <div className="dev-log-h5">STILL BEING WORKED ON</div>
+                  <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.still_working}</p>
+                </div>
+              )}
+              {selectedProject.future_work && (
+                <div className="dev-log-section">
+                  <div className="dev-log-h5">FUTURE WORK</div>
+                  <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.future_work}</p>
+                </div>
+              )}
+              {selectedProject.status_detail && (
+                <div className="dev-log-section">
+                  <div className="dev-log-h5">STATUS DETAIL</div>
+                  <p className="dev-log-p" style={{ whiteSpace: 'pre-line' }}>{selectedProject.status_detail}</p>
+                </div>
+              )}
             </div>
           </div>
         )}
