@@ -2998,9 +2998,20 @@ The core local-first architecture is complete, with calendar, habits, projects, 
             <div class="chip-row">
               ${parsedTags.map(t => `<span class="chip">${t}</span>`).join('')}
             </div>
-            <a href="index.html?project=${slug}" target="_blank"
-              class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%;">▶
-              VIEW CASE STUDY</a>
+            ${project.live_link ? `
+              <div style="display: flex; gap: 8px; margin-top: 14px;">
+                <a href="?project=${slug}"
+                  class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="flex: 1; text-align: center; padding-left: 4px; padding-right: 4px;">▶
+                  CASE STUDY</a>
+                <a href="${project.live_link}" target="_blank" rel="noopener noreferrer"
+                  class="pixel-btn pixel-btn--sm pixel-btn--yellow" style="flex: 1; text-align: center; padding-left: 4px; padding-right: 4px;">▶
+                  VISIT SITE</a>
+              </div>
+            ` : `
+              <a href="?project=${slug}"
+                class="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study" style="margin-top:14px; width:100%; text-align: center;">▶
+                VIEW CASE STUDY</a>
+            `}
             <div class="case-study-drawer">
               <div class="dev-log-title">[DEVELOPER LOG: CASE STUDY]</div>
               <div class="dev-log-section">
@@ -3046,6 +3057,32 @@ The core local-first architecture is complete, with calendar, habits, projects, 
 
       cartridges = document.querySelectorAll('.cartridge');
 
+      // Bind click events to case study buttons to open modal on the same page
+      container.querySelectorAll('.toggle-case-study').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const cartridge = btn.closest('.cartridge');
+          const pSlug = cartridge.getAttribute('data-project-id');
+          if (pSlug) {
+            const title = cartridge.querySelector('.cart-top h3').textContent;
+            const drawer = cartridge.querySelector('.case-study-drawer');
+            if (drawer) {
+              const modal = document.getElementById('case-study-modal');
+              const modalTitle = document.getElementById('modal-title-text');
+              const modalBody = document.getElementById('modal-body-content');
+
+              modalTitle.textContent = title.toUpperCase() + ' — CASE STUDY';
+              modalBody.innerHTML = drawer.innerHTML;
+              modal.classList.add('is-visible');
+
+              // Update URL parameter without reloading
+              const newUrl = `${window.location.pathname}?project=${pSlug}`;
+              window.history.pushState({}, '', newUrl);
+            }
+          }
+        });
+      });
+
       const params = new URLSearchParams(window.location.search);
       const projectSlug = params.get('project');
       if (projectSlug) {
@@ -3083,7 +3120,13 @@ The core local-first architecture is complete, with calendar, habits, projects, 
       if (window.opener) {
         window.close();
       } else {
-        window.location.href = 'index.html';
+        const modal = document.getElementById('case-study-modal');
+        if (modal) {
+          modal.classList.remove('is-visible');
+        }
+        // Clear url parameter without reloading
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
       }
     }
 
