@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/projects",
+      "destination": "/api/public/projects.json"
+    },
+    {
+      "source": "/api/projects",
+      "destination": "/client/public/api/projects.json"
+    }
+  ]
+}
