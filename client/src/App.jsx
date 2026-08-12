@@ -56,9 +56,7 @@ function App() {
   // Fetch projects from local server API
   useEffect(() => {
     async function loadProjects() {
-      const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:5000/api'
-        : '/api';
+      const API_BASE = '/api';
       try {
         const res = await fetch(`${API_BASE}/projects`);
         if (res.ok) {
@@ -210,21 +208,30 @@ function App() {
 
   // Open / close modal handlers
   const handleOpenCaseStudy = (project, e) => {
-    e.preventDefault();
-    setSelectedProject(project);
-    setIsModalOpen(true);
-    // Update url parameter
-    const slug = project.title.toLowerCase().replace(/[\s_]+/g, '-').replace(/[^a-z0-9-]/g, '');
-    const newUrl = `${window.location.pathname}?project=${slug}`;
-    window.history.pushState({}, '', newUrl);
+    if (e) e.preventDefault();
+    if (!project) return;
+    try {
+      setSelectedProject(project);
+      setIsModalOpen(true);
+      // Update url parameter
+      const slug = project.title.toLowerCase().replace(/[\s_]+/g, '-').replace(/[^a-z0-9-]/g, '');
+      const newUrl = `${window.location.pathname}?project=${slug}`;
+      window.history.pushState({}, '', newUrl);
+    } catch (err) {
+      console.error('Error opening case study:', err);
+    }
   };
 
   const handleCloseCaseStudy = () => {
-    setIsModalOpen(false);
-    setSelectedProject(null);
-    // Clear url parameter
-    const newUrl = window.location.pathname;
-    window.history.replaceState({}, '', newUrl);
+    try {
+      setIsModalOpen(false);
+      setSelectedProject(null);
+      // Clear url parameter
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    } catch (err) {
+      console.error('Error closing case study:', err);
+    }
   };
 
   // Close modal on Escape
@@ -449,7 +456,7 @@ function App() {
                     </div>
                   </div>
                   <div className="hero-image-col">
-                    <img src={cutoutSpideyImg} alt="Saad Ahmad" />
+                    {/* <img src={cutoutSpideyImg} alt="Saad Ahmad" /> */}
                   </div>
                 </div>
               </section>
