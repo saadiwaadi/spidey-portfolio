@@ -1,0 +1,208 @@
+[
+  {
+    "id": 6,
+    "title": "Siyaahi",
+    "description": "Design and print label producing stickers, posters, and custom editorial visual identities.",
+    "status": "DESIGN",
+    "tags": [
+      "Editorial Identity",
+      "Print Design",
+      "Merchandise"
+    ],
+    "overview": "A design and print label studio creating visual designs, poster art, high-dpi stickers, and modern editorial identities.",
+    "architecture": [
+      "System Architecture: Print production design structures and asset configurations.",
+      "Tech Stack: Vector design environments.",
+      "Export Parameters: High-resolution rasterization and layout alignment."
+    ],
+    "tech_stack": "Adobe Illustrator, Figma, Vector Assets, CMYK Proofing.",
+    "features": [
+      "Editorial Identities: Cohesive asset kits for corporate and creative branding.",
+      "Print Layouts: Custom templates formatted for large posters and tiny custom stickers.",
+      "Merchandising Formats: Print-ready files adapted for multiple materials."
+    ],
+    "challenges": "Visual distortions and color differences between digital monitors and paper prints. Solved by mapping monitor outputs strictly to CMYK profiles, and enforcing minimum 300 DPI exports on physical assets.",
+    "decisions": "Committed strictly to vector design methods, guaranteeing infinite scale potential from stickers to billboards without loss of clarity.",
+    "performance": "Organized assets using standardized file structures, matching the strict formatting requirements of print shops.",
+    "learnings": "Designing for print requires an understanding of physical paper traits, ink absorption dynamics, and print sizing constraints.",
+    "still_working": null,
+    "future_work": null,
+    "status_detail": null,
+    "live_link": null,
+    "created_at": "2026-08-12 09:28:33"
+  },
+  {
+    "id": 5,
+    "title": "Pace",
+    "description": "Offline-first productivity, built around the idea that the internet is optional.",
+    "status": "PERSONAL",
+    "tags": [
+      "React",
+      "Dexie",
+      "Supabase"
+    ],
+    "overview": "Pace is a personal productivity dashboard for notes, habits, projects, timers, and calendar — designed to work instantly offline and quietly sync when a connection comes back.\n\nThe slightly obsessive part is underneath: the device is the primary source of truth. The cloud is basically a backup that catches up later.\n\n### The idea\n\nMost productivity apps assume you’re permanently online. Pace doesn’t.\n\nEvery action is written locally first, so checking a habit, starting a timer, or editing a project works exactly the same with a connection or without one. Sync happens in the background when it can.\n\nAnd because apparently a normal productivity app wasn't strange enough, the UI also has Pokémon dropping mildly existential thoughts while you get things done.",
+    "architecture": [
+      "React: Frontend and interaction layer, designed to feel closer to a native app than a traditional web dashboard.",
+      "Dexie.js + IndexedDB: The local database and immediate source of truth. Reads and writes happen on-device first.",
+      "Supabase + PostgreSQL: Cloud persistence with Row-Level Security keeping each user's data isolated at the database level.",
+      "Custom Sync Layer: Queued mutations, retries, timestamps, conflict resolution, and background replication between local and cloud state.",
+      "Vercel: Deployment and static hosting."
+    ],
+    "tech_stack": "React · Dexie.js · IndexedDB · Supabase · PostgreSQL · Tailwind CSS · Vercel",
+    "features": [
+      "Local interactions resolve without waiting for a network request.",
+      "Database-level Row-Level Security means user isolation isn't just a frontend assumption.",
+      "Dates are serialized and restored carefully across the sync boundary.",
+      "Deleted records are tracked rather than simply disappearing, allowing the sync layer to understand what actually changed.",
+      "Conflicts are resolved automatically instead of becoming the user's problem."
+    ],
+    "challenges": "The hardest part wasn't building the productivity modules. It was making two versions of the same data agree after one of them has been offline.\n\nPace uses timestamp-based Last-Write-Wins conflict resolution. Local mutations are queued while offline, retried when connectivity returns, and reconciled against newer versions without interrupting the user.\n\nThe UI never needs to know there was a fight.",
+    "decisions": "React → Dexie / IndexedDB → Sync Queue → Supabase / PostgreSQL\n\nLocal state comes first. Cloud state catches up.\n\nSupabase's realtime capabilities handle communication, while the custom QueueManager handles mutations that need to wait, retry, or fail without blocking the rest of the application.",
+    "performance": "",
+    "learnings": "Offline-first isn't really about making an app work without Wi-Fi.\n\nIt's about deciding what \"truth\" means when multiple versions of the same thing exist.\n\nOnce every change becomes a local mutation that can be queued, replayed, compared, and reconciled, sync stops feeling like a separate feature and starts becoming part of the architecture itself.",
+    "still_working": "Pace is deployed and used daily, but it isn't pretending to be finished.\n\nThe current work is mostly around the awkward edges of the system: timezone and date-shifting bugs in habit tracking, occasional mobile layout regressions, authentication edge cases, stale environment configuration during deployment, and making the sync layer more resilient when records are changed in multiple places.\n\nThere have also been the occasional bugs that sound completely unrelated until you remember everything is connected — a Tiptap editor crash, a broken habit heatmap, and the usual collection of small UI and state-management problems.\n\nThey're not glamorous, but they're part of making the architecture reliable rather than just functional.",
+    "future_work": "The next stages are focused on expanding Pace without compromising its local-first foundation.\n\nPlanned work includes deeper calendar functionality, more powerful project and task management, richer habit analytics, improved sync diagnostics and recovery, stronger cross-device consistency, and continued refinement of the mobile experience.\n\nThe goal isn't to keep adding modules forever. It's to make the existing system feel increasingly complete while keeping the original rule intact:\n\nPace should remain useful even when the internet isn't.",
+    "status_detail": "Shipped · Actively used daily\n\nPace is fully deployed and in daily use as my primary productivity system.\n\nThe core local-first architecture is complete, with calendar, habits, projects, timers, and notes all working offline-first and syncing in the background. Development now happens around refinement, new modules, and the less-visible engineering work that keeps local and cloud state from disagreeing.",
+    "live_link": "https://loop-productivity-tracker.vercel.app/",
+    "created_at": "2026-08-12 09:28:33"
+  },
+  {
+    "id": 4,
+    "title": "CarrierLens",
+    "description": "End-to-end production architecture: React/Vite on Vercel, Express/Docker on Railway, Supabase for data, BullMQ for background jobs.",
+    "status": "SHIPPED",
+    "tags": [
+      "React",
+      "Railway",
+      "Supabase",
+      "BullMQ"
+    ],
+    "overview": "Architecting a resilient, distributed web backend to ingest logistics and shipping records without downtime.",
+    "architecture": [
+      "System Architecture: Decoupled microservices architecture.",
+      "Backend: Express REST API running inside Docker.",
+      "Frontend: React/Vite client hosted on Vercel.",
+      "Database: Supabase PostgreSQL instances with row-level security.",
+      "APIs & Workers: Redis-backed BullMQ handling asynchronous tracking synchronization.",
+      "Deployment: Railway container servers."
+    ],
+    "tech_stack": "React, Vite, Node.js, Express, Docker, Railway, Supabase, BullMQ, Redis.",
+    "features": [
+      "Decoupled Queue Workers: BullMQ jobs running separately from web API server nodes.",
+      "Real-time Tracking: Webhook listeners updating shipment status tables.",
+      "Containerization: Structured Docker builds maintaining system behavior across dev and production."
+    ],
+    "challenges": "Logistical syncing tasks blocking the server thread and causing API timeouts. Resolved by offloading the sync operations to BullMQ queue workers, freeing Express backend nodes from parsing data.",
+    "decisions": "Paired Railway container hosts with Supabase PostgreSQL because of their quick scalability and built-in replication tools, accelerating development velocity.",
+    "performance": "Decoupled queue worker structure scales independently, allowing processing of up to 500 concurrent tracking updates without slowing API response times.",
+    "learnings": "Dividing complex platforms into isolated services prevents bottlenecking, maintaining reliable performance under heavy usage.",
+    "still_working": null,
+    "future_work": null,
+    "status_detail": null,
+    "live_link": null,
+    "created_at": "2026-08-12 09:28:33"
+  },
+  {
+    "id": 3,
+    "title": "ORACLE-26",
+    "description": "A football prediction engine built to argue with people about the 2026 World Cup.",
+    "status": "RUNNING",
+    "tags": [
+      "Python",
+      "GitHub Actions",
+      "mutmut"
+    ],
+    "overview": "A football prediction engine built to argue with people about the 2026 World Cup.\n\nORACLE-26 is a statistical football prediction engine built specifically around the 2026 World Cup and its expanded 48-team format.\n\nIt takes historical results, team strength, rankings, market value, recent form, lineups, and injuries and turns them into estimated win, draw, and loss probabilities.\n\nThe goal isn't to predict football perfectly. It's to put some actual numbers behind the arguments people make about it.\n\n### The idea\n\nI didn't start with a general-purpose prediction model and look for somewhere to use it.\n\nThe 2026 World Cup was the reason to build it.\n\nThe expanded tournament, different stages, changing squads, and constantly updating team information all became part of the architecture. The model is designed around the tournament rather than football prediction in the abstract.\n\nAnd yes, part of the motivation was being able to answer \"Argentina are obviously better than Morocco\" with something slightly more useful than \"trust me bro.\"",
+    "architecture": [
+      "Python Scrapers: Scheduled scrapers collect fixtures, squads, lineups, match results, and injuries.",
+      "Pandas & NumPy: Data ingestion, feature preparation, and statistical processing.",
+      "Prediction Engine (engine.js): The core prediction engine written in JavaScript, isolated from the scraping pipeline.",
+      "GitHub Actions: Scheduled cron jobs execute predictions and commit updates directly to Git history.",
+      "Evaluation: Continuous backtesting and Brier score tracking."
+    ],
+    "tech_stack": "Python · SciPy · Pandas · NumPy · JavaScript · GitHub Actions",
+    "features": [
+      "Five Independent Scrapers: Resilient data collection so a single broken source does not halt the pipeline.",
+      "Dixon-Coles Low-Score Correction: Adjusts standard Poisson limits for low-scoring match outcomes.",
+      "Git-Backed Pipeline: Git commits act as the prediction audit logs without database server costs."
+    ],
+    "challenges": "The biggest engineering problem wasn't getting the model to run.\n\nIt was making sure the maths didn't quietly become wrong.\n\nA normal software bug usually crashes something. Statistical bugs can happily return perfectly valid numbers while being completely incorrect.\n\nThat's why ORACLE-26 uses mutation testing with mutmut. The test suite deliberately introduces small mathematical changes — flipped signs, altered constants, changed operators — and checks whether the tests notice.\n\nCurrent mutation coverage is roughly 70%, which also means roughly 30% of those injected changes can still slip through.\n\nThat's not something I'm hiding behind a percentage. It's one of the areas the project still needs to improve.",
+    "decisions": "Python Scrapers → Pandas → Prediction Engine → Probability Matrix → Evaluation → Git History\n\nThe system runs as a scheduled batch pipeline.\n\nScrapers collect the latest available information, the engine recalculates team strength and score probabilities, and the resulting predictions and statistics are committed back into the repository.\n\nNo server sitting around waiting for requests. Just a scheduled job waking up, doing the maths, and going back to sleep.",
+    "performance": "The model currently sits around 61% outcome accuracy across 82+ matches, with a Brier score around 0.54.\n\nThe Brier score is particularly important because accuracy alone can make a prediction model look better than it really is. It measures how well the probabilities themselves are calibrated — not just whether the final predicted outcome happened to be correct.\n\nThe model has useful signal.\n\nIt is also very much not a football oracle.\n\nHence the name.",
+    "learnings": "Building a statistical system taught me something that ordinary application development doesn't make obvious:\n\nA program returning a number doesn't mean the number deserves to exist.\n\nThe hardest part isn't making the model calculate. It's deciding whether the assumptions, data, probabilities, and evaluation around that calculation are actually trustworthy.\n\nThat's where most of the interesting engineering in ORACLE-26 ended up.",
+    "still_working": "The project has had its share of wonderfully stupid bugs.\n\nAt one point the Dixon-Coles implementation wasn't actually implementing Dixon-Coles correctly and was effectively giving draws a flat boost. That was removed in favour of the proper low-score correction.\n\nThere are also incomplete historical rating values in the current static dataset, including missing elo_delta_90 data for Scotland and several other teams. That can propagate NaN values into parts of the momentum calculation and is still on the cleanup list.\n\nAnd yes, there was also a complete index.html rewrite that got reverted.\n\nGit remembers everything.",
+    "future_work": "The next stage is less about adding random complexity and more about making the model harder to fool.\n\nPlanned work includes better historical data coverage, stronger injury and lineup weighting, improved mutation-test coverage, more rigorous backtesting, better probability calibration, and continued refinement of the World Cup stage-specific modifiers.\n\nThe long-term goal is to move from a model that can produce interesting predictions to one that can explain why it believes a prediction is likely — and quantify how confident it should actually be.",
+    "status_detail": "Live · Actively developing\n\nORACLE-26 is deployed and continuously updated through scheduled data pipelines.\n\nIt is still an experimental prediction system rather than a finished scientific model — which is kind of the point. The project is as much about learning how to build, test, evaluate, and break statistical systems as it is about predicting who wins the World Cup.",
+    "live_link": "https://wordcup-predictor-2026.vercel.app/",
+    "created_at": "2026-08-12 09:28:33"
+  },
+  {
+    "id": 2,
+    "title": "River View ERP",
+    "description": "A business management system built to replace spreadsheets with something that actually remembers what happened.",
+    "status": "LIVE",
+    "tags": [
+      "React",
+      "Vite",
+      "Node.js",
+      "Express",
+      "MongoDB"
+    ],
+    "overview": "A business management system built to replace spreadsheets with something that actually remembers what happened.\n\nRiver View ERP is a custom management system built for a housing society to move its day-to-day operations away from scattered Excel files and into one connected system.\n\nIt brings member records, plot information, utility billing, ledgers, complaints, bookings, and administrative operations into a single place — while keeping the system practical enough for the people who actually have to use it.\n\n### The idea\n\nThe problem wasn't that the society didn't have data.\n\nIt had too much of it, spread across too many places.\n\nRecords lived in spreadsheets, billing involved manual calculations, and keeping historical information consistent became increasingly difficult as the number of houses grew.\n\nRiver View was built around a simpler idea: one system should know what happened, when it happened, and what the current state is.",
+    "architecture": [
+      "React + Vite: Modern fast client-side administrative interface.",
+      "Node.js + Express: Backend REST API owning business rules, calculations, and security.",
+      "MongoDB: Flexible document storage for members, plots, bills, bookings, and complaints.",
+      "JWT + bcrypt: Secure role-based authorization for administrators and members.",
+      "Local-first Deployment: Set up initially on-premise on the society's own infrastructure."
+    ],
+    "tech_stack": "React · Vite · Tailwind CSS · Node.js · Express · MongoDB · JWT",
+    "features": [
+      "Member & Plot Records: Centralized, synchronized profiles for houses and residents.",
+      "Utility Billing Engine: Automatically tracks monthly bills, late fees, and arrears.",
+      "Unified Ledger: Connects society cash flows and outstanding balances dynamically."
+    ],
+    "challenges": "The most important engineering challenge was financial integrity.\n\nWhen you're building a normal CRUD application, changing a record is usually straightforward.\n\nWhen that record represents money someone already paid, it becomes a very different problem.\n\nRiver View therefore had to distinguish between current calculations and historical truth. Reconciliation became a separate operation rather than something that happens invisibly whenever data changes.\n\nThat led to preview/dry-run behaviour, protection for settled records, and explicit handling of edge cases such as deleted plots and partially generated bills.",
+    "decisions": "React → Express API → MongoDB\n\nThe frontend handles the operational interface, while the backend owns business rules and data integrity.\n\nAuthentication and permissions sit between the user and the underlying records, with separate member and administrator capabilities.\n\nThe system is designed around roughly 1,000 houses, with the initial deployment focused on local infrastructure and reliability rather than unnecessary cloud complexity.",
+    "performance": "",
+    "learnings": "ERP software is less about having a lot of screens and more about preserving the relationship between things.\n\nA bill isn't just a bill. It's connected to a house, a member, a month, previous arrears, payments, adjustments, and an eventual financial history.\n\nOnce those relationships matter, the job stops being \"build a dashboard\" and becomes \"make sure the system doesn't lie.\"",
+    "still_working": "The billing system went through several iterations because some seemingly harmless recalculation logic could mutate historical bills.\n\nThere were also the usual problems that appear when a system moves from development into actual deployment: database paths, local infrastructure, authentication edge cases, and keeping generated billing data consistent across different parts of the application.\n\nThose problems ended up shaping the architecture more than the original feature list did.",
+    "future_work": "Future development is focused on expanding the administrative tooling, improving reporting and financial visibility, strengthening billing reconciliation, and making the system easier for society staff to operate without technical assistance.\n\nThe broader goal is to turn what started as a replacement for spreadsheets into a dependable operational system for the society — one that can handle the boring, repetitive, financially important work without requiring someone to remember which Excel file contains the latest version.",
+    "status_detail": "Production project · Actively maintained\n\nRiver View ERP is built around a real operational use case rather than as a portfolio demo.\n\nThe core management and billing systems are in place, with ongoing work focused on reliability, reconciliation, reporting, and the edge cases that only become visible once software starts dealing with real records and real money.",
+    "live_link": null,
+    "created_at": "2026-08-12 09:28:33"
+  },
+  {
+    "id": 1,
+    "title": "Cheema Traders POS",
+    "description": "A desktop POS and accounting system for a business that doesn't get to be wrong about money.",
+    "status": "LIVE",
+    "tags": [
+      "Electron",
+      "SQLite"
+    ],
+    "overview": "A desktop POS and accounting system for a business that doesn't get to be wrong about money.\n\nCheema Traders POS is a local desktop system built for a real trading business, combining point-of-sale operations with customer ledgers, supplier payments, expenses, cashbook, and general ledger management.\n\nThe interesting part isn't selling something through a screen. It's making sure that sale still makes sense when someone checks the books six months later.\n\n### The idea\n\nMost POS systems are built around the transaction: make the sale, print the receipt, move on.\n\nFor a trading business, that's only the beginning.\n\nA sale changes a customer's balance. A payment changes the ledger. A return reverses part of a transaction. An expense affects the books. Every one of those actions has consequences somewhere else in the system.\n\nCheema Traders POS was built around keeping those relationships intact.",
+    "architecture": [
+      "Electron: Native desktop runtime wrapping the desktop application interface.",
+      "SQLite (via better-sqlite3): Local database engine running directly on-device with zero internet dependencies.",
+      "Transactional Write Layer: Ensures sales, payments, and expenses commit atomically or roll back entirely.",
+      "Connected Ledgers: Keeps general ledger, cashbook, and supplier records bound to transactions."
+    ],
+    "tech_stack": "Electron · SQLite · better-sqlite3 · JavaScript",
+    "features": [
+      "Dual-Ledger Accounting: Tracks custom outstanding DR balances against live cashbooks.",
+      "Reversals System: Deletes use transparent accounting reversal offsets instead of purging database rows.",
+      "General Ledger Reporting: Native summaries with Excel/PDF layout exporters."
+    ],
+    "challenges": "Financial bugs are particularly nasty because they don't necessarily crash anything.\n\nA UI bug is visible.\n\nA ledger being wrong by a few thousand rupees can quietly sit there until someone notices that the numbers don't reconcile.\n\nDuring auditing, the system uncovered issues including double-counting in Total Paid calculations and a structural difference between the cached customer balance and the live-calculated Outstanding DR figure.\n\nThose weren't application crashes.\n\nThey were numbers that looked perfectly reasonable until someone actually questioned them.\n\nThat changed how the system is being developed: financial correctness has to be actively tested and audited rather than assumed because the application runs.",
+    "decisions": "Electron → better-sqlite3 → SQLite\n\nThe application is deliberately local-first.\n\nSales, payments, expenses, and ledger operations happen directly against the local database, without a network request sitting between the user and the transaction.\n\nThat makes the system simple to deploy for a single-location business while also eliminating an entire category of internet and server dependency.",
+    "performance": "Indexed SQLite primary transaction tables, keeping query retrieval times below 10ms for up to 100,000 ledger records.",
+    "learnings": "Building this system made one thing painfully clear:\n\nA successful transaction isn't the same thing as a correct transaction.\n\nThe application can save the sale, print the invoice, and return a green success message while the books are quietly wrong somewhere underneath.\n\nThat means accounting software needs a different mindset from ordinary CRUD applications. Transactions need invariants. Reversals need rules. Historical data needs protection. And sometimes the most important feature is an audit that tells you your own software was wrong.",
+    "still_working": "The project has already gone through a number of accounting-specific corrections.\n\nFull invoice voiding had to be replaced with proper partial-return handling.\n\nCore financial operations had to be converted to atomic transactions after discovering potential ledger desynchronization.\n\nDeletion logic became complicated enough to earn its own DELETION_BACKLOG.md, documenting how different records should reverse their accounting effects instead of simply disappearing.\n\nAnd the cached-balance versus live-Outstanding-DR discrepancy is still an open structural issue being investigated.\n\nBasically, the accounting bugs don't care how clean the UI looks.\n\n### The fun bit\n\nThere is literally a file called DELETION_BACKLOG.md.\n\nIt exists because deleting something in an accounting system isn't really deleting it.\n\nIf a payment disappears, its ledger effect has to disappear correctly too. If an expense is removed, the corresponding accounting entries need to be reversed. Eventually there were enough edge cases that the solution became: write down the rules so future-me stops inventing new versions of accounting logic.\n\nIt's probably the least glamorous file in the project and one of the most important.",
+    "future_work": "The next stage is focused heavily on auditing and financial consistency rather than simply adding more screens.\n\nThat includes resolving the cached-balance/live-balance discrepancy, strengthening reconciliation tools, expanding automated tests around accounting invariants, and continuing to audit reversal and transaction paths.\n\nThere is also room for deeper reporting, forecasting, multi-shop capabilities, and additional inventory functionality as the operational requirements grow.\n\nThe principle stays the same: new features shouldn't make the underlying financial truth harder to verify.",
+    "status_detail": "Production project · Actively used · Actively audited\n\nCheema Traders POS is being used for real business operations and is still under active development and financial auditing.\n\nThe core POS, ledger, accounting, payment, expense, and reversal workflows are in place. Current development is focused on hardening the system, finding discrepancies before they become business problems, and making the accounting layer increasingly difficult to get wrong.",
+    "live_link": null,
+    "created_at": "2026-08-12 09:28:32"
+  }
+]
