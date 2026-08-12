@@ -729,14 +729,36 @@ function App() {
                               <span key={t} className="chip">{t}</span>
                             ))}
                           </div>
-                          <a
-                            href={`?project=${slug}`}
-                            onClick={(e) => handleOpenCaseStudy(project, e)}
-                            className="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study"
-                            style={{ marginTop: '14px', width: '100%' }}
-                          >
-                            ▶ VIEW CASE STUDY
-                          </a>
+                          {project.live_link ? (
+                            <div style={{ display: 'flex', gap: '8px', marginTop: '14px' }}>
+                              <a
+                                href={`?project=${slug}`}
+                                onClick={(e) => handleOpenCaseStudy(project, e)}
+                                className="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study"
+                                style={{ flex: 1, textAlign: 'center', paddingLeft: '4px', paddingRight: '4px' }}
+                              >
+                                ▶ CASE STUDY
+                              </a>
+                              <a
+                                href={project.live_link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="pixel-btn pixel-btn--sm pixel-btn--yellow"
+                                style={{ flex: 1, textAlign: 'center', paddingLeft: '4px', paddingRight: '4px' }}
+                              >
+                                ▶ VISIT SITE
+                              </a>
+                            </div>
+                          ) : (
+                            <a
+                              href={`?project=${slug}`}
+                              onClick={(e) => handleOpenCaseStudy(project, e)}
+                              className="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study"
+                              style={{ marginTop: '14px', width: '100%', textAlign: 'center' }}
+                            >
+                              ▶ VIEW CASE STUDY
+                            </a>
+                          )}
                         </article>
                       );
                     })}

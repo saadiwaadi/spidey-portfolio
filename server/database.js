@@ -54,6 +54,7 @@ function initializeDatabase() {
         still_working TEXT,
         future_work TEXT,
         status_detail TEXT,
+        live_link TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `, () => {
@@ -255,6 +256,7 @@ The core management and billing systems are in place, with ongoing work focused 
           title: "ORACLE-26",
           status: "RUNNING",
           description: "A football prediction engine built to argue with people about the 2026 World Cup.",
+          live_link: "https://vercel.com/saaads-projects-880883cb/wordcup-predictor-2026",
           tags: JSON.stringify(["Python", "GitHub Actions", "mutmut"]),
           overview: `A football prediction engine built to argue with people about the 2026 World Cup.
 
@@ -369,6 +371,7 @@ It is still an experimental prediction system rather than a finished scientific 
           title: "Pace",
           status: "PERSONAL",
           description: "Offline-first productivity, built around the idea that the internet is optional.",
+          live_link: "https://loop-productivity-tracker.vercel.app/",
           tags: JSON.stringify(["React", "Dexie", "Supabase"]),
           overview: `Pace is a personal productivity dashboard for notes, habits, projects, timers, and calendar — designed to work instantly offline and quietly sync when a connection comes back.
 
@@ -460,15 +463,15 @@ The core local-first architecture is complete, with calendar, habits, projects, 
         INSERT INTO projects (
           title, description, status, tags, overview, architecture,
           tech_stack, features, challenges, decisions, performance, learnings,
-          still_working, future_work, status_detail
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          still_working, future_work, status_detail, live_link
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
 
       defaultProjects.forEach((p) => {
         stmt.run(
           p.title, p.description, p.status, p.tags, p.overview, p.architecture,
           p.tech_stack, p.features, p.challenges, p.decisions, p.performance, p.learnings,
-          p.still_working, p.future_work, p.status_detail
+          p.still_working, p.future_work, p.status_detail, p.live_link || null
         );
       });
       stmt.finalize();

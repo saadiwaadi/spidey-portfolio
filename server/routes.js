@@ -56,7 +56,7 @@ router.get('/projects', (req, res) => {
 router.post('/admin/projects', authenticateToken, (req, res) => {
   const {
     title, description, status, tags, overview, architecture,
-    tech_stack, features, challenges, decisions, performance, learnings
+    tech_stack, features, challenges, decisions, performance, learnings, live_link
   } = req.body;
 
   if (!title || !description || !status) {
@@ -70,13 +70,13 @@ router.post('/admin/projects', authenticateToken, (req, res) => {
   const query = `
     INSERT INTO projects (
       title, description, status, tags, overview, architecture,
-      tech_stack, features, challenges, decisions, performance, learnings
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      tech_stack, features, challenges, decisions, performance, learnings, live_link
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   db.run(query, [
     title, description, status, tagsStr, overview, archStr,
-    tech_stack, featStr, challenges, decisions, performance, learnings
+    tech_stack, featStr, challenges, decisions, performance, learnings, live_link || null
   ], function (err) {
     if (err) {
       return res.status(500).json({ error: err.message });
@@ -90,7 +90,7 @@ router.put('/admin/projects/:id', authenticateToken, (req, res) => {
   const { id } = req.params;
   const {
     title, description, status, tags, overview, architecture,
-    tech_stack, features, challenges, decisions, performance, learnings
+    tech_stack, features, challenges, decisions, performance, learnings, live_link
   } = req.body;
 
   if (!title || !description || !status) {
@@ -104,13 +104,13 @@ router.put('/admin/projects/:id', authenticateToken, (req, res) => {
   const query = `
     UPDATE projects SET
       title = ?, description = ?, status = ?, tags = ?, overview = ?, architecture = ?,
-      tech_stack = ?, features = ?, challenges = ?, decisions = ?, performance = ?, learnings = ?
+      tech_stack = ?, features = ?, challenges = ?, decisions = ?, performance = ?, learnings = ?, live_link = ?
     WHERE id = ?
   `;
 
   db.run(query, [
     title, description, status, tagsStr, overview, archStr,
-    tech_stack, featStr, challenges, decisions, performance, learnings,
+    tech_stack, featStr, challenges, decisions, performance, learnings, live_link || null,
     id
   ], function (err) {
     if (err) {
