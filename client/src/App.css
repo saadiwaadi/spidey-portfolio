@@ -1962,5 +1962,8 @@ footer .save-blip {
   }
   .project-btn-row .pixel-btn {
     width: 100%;
+    font-size: 7px;
+    padding: 5px 8px;
+    box-shadow: 0 2px 0 0 var(--bg-inset);
   }
 }

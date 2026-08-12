@@ -1843,6 +1843,9 @@
         }
         .project-btn-row .pixel-btn {
           width: 100%;
+          font-size: 7px;
+          padding: 5px 8px;
+          box-shadow: 0 2px 0 0 var(--bg-inset);
         }
       }
     </style>
@@ -2875,7 +2878,8 @@ The core local-first architecture is complete, with calendar, habits, projects, 
 
     function currentIndex() {
       var offset = 90;
-      var y = window.scrollY + offset;
+      var screenEl = document.querySelector('.device-screen');
+      var y = (screenEl ? screenEl.scrollTop : 0) + offset;
       var idx = 0;
       for (var i = 0; i < sections.length; i++) {
         if (sections[i] && sections[i].offsetTop <= y) { idx = i; }
@@ -2890,8 +2894,9 @@ The core local-first architecture is complete, with calendar, habits, projects, 
     function startScrolling(dir) {
       if (scrollInterval) clearInterval(scrollInterval);
       var speed = dir === 'down' ? 12 : -12;
+      var screenEl = document.querySelector('.device-screen');
       scrollInterval = setInterval(function () {
-        window.scrollBy(0, speed);
+        if (screenEl) screenEl.scrollTop += speed;
       }, 16);
     }
     function stopScrolling() {
@@ -2922,10 +2927,13 @@ The core local-first architecture is complete, with calendar, habits, projects, 
         if (isHolding) {
           stopScrolling();
         } else {
-          window.scrollBy({
-            top: dir === 'down' ? 150 : -150,
-            behavior: 'smooth'
-          });
+          var screenEl = document.querySelector('.device-screen');
+          if (screenEl) {
+            screenEl.scrollBy({
+              top: dir === 'down' ? 150 : -150,
+              behavior: 'smooth'
+            });
+          }
         }
       }
 
@@ -3211,7 +3219,7 @@ The core local-first architecture is complete, with calendar, habits, projects, 
             }
           }
         });
-      }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+      }, { root: document.querySelector('.device-screen'), rootMargin: '-45% 0px -45% 0px', threshold: 0 });
 
       ['profile', 'education', 'stats', 'work', 'projects', 'side-quests', 'contact'].forEach(function (id) {
         var el = document.getElementById(id);
