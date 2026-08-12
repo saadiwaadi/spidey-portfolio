@@ -1956,8 +1956,29 @@ footer .save-blip {
   .wrap {
     padding: 0 8px;
   }
+  .cart-grid {
+    gap: 12px;
+  }
   .cartridge {
     padding: 10px;
+  }
+  .cartridge p {
+    font-size: 10px;
+    margin-bottom: 8px;
+  }
+  .cart-top {
+    margin-bottom: 6px;
+  }
+  .cart-top h3 {
+    font-size: 10px;
+  }
+  .cart-tag {
+    font-size: 7px;
+    padding: 3px 5px;
+  }
+  .cartridge .chip {
+    font-size: 7px;
+    padding: 2px 4px;
   }
   .panel {
     padding: 12px 10px;
