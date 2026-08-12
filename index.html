@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>SAAD AHMAD — Full-Stack Developer &amp; Founder</title>
   <link rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2306141f'/%3E%3Crect x='2' y='2' width='12' height='12' fill='%23f5a623'/%3E%3Crect x='4' y='4' width='3' height='3' fill='%2306141f'/%3E%3Crect x='9' y='4' width='3' height='3' fill='%2306141f'/%3E%3Crect x='5' y='9' width='6' height='2' fill='%23e8453c'/%3E%3C/svg%3E">
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%231c4a75'/%3E%3Crect x='4' y='3' width='8' height='2' fill='%23f5a623'/%3E%3Crect x='4' y='5' width='2' height='2' fill='%23f5a623'/%3E%3Crect x='4' y='7' width='8' height='2' fill='%23f5a623'/%3E%3Crect x='10' y='9' width='2' height='2' fill='%23f5a623'/%3E%3Crect x='4' y='11' width='8' height='2' fill='%23f5a623'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
@@ -52,10 +52,12 @@
     .device-bezel {
       background: transparent;
       padding: 22px; /* matches visual overlay thickness */
-      min-height: 100vh;
+      height: 100vh;
+      height: 100svh;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
     /* ============ FIXED VISUAL BEZEL OVERLAY ============ */
@@ -498,6 +500,20 @@
 
     .pixel-btn--sm:active {
       transform: translateY(3px);
+    }
+
+    .project-btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      width: 100%;
+    }
+
+    .project-btn-row .pixel-btn {
+      flex: 1;
+      text-align: center;
+      padding-left: 4px;
+      padding-right: 4px;
     }
 
     /* ============ PANELS ============ */
@@ -1525,6 +1541,12 @@
         bottom: 160px;
       }
 
+      .device-bezel {
+        height: calc(100vh - 160px);
+        height: calc(100svh - 160px);
+        min-height: auto;
+      }
+
       :root {
         --console-h: 112px;
       }
@@ -1805,6 +1827,23 @@
         :root { --console-h: 128px; }
         .section { padding: 64px 0; }
         .hero-title { font-size: clamp(24px, 7vw, 40px); }
+        
+        .wrap {
+          padding: 0 12px;
+        }
+        .cartridge {
+          padding: 12px;
+        }
+        .panel {
+          padding: 16px 12px;
+        }
+        .project-btn-row {
+          flex-direction: column;
+          gap: 6px;
+        }
+        .project-btn-row .pixel-btn {
+          width: 100%;
+        }
       }
     </style>
 </head>

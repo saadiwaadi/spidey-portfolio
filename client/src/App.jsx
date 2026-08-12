@@ -730,12 +730,11 @@ function App() {
                             ))}
                           </div>
                           {project.live_link ? (
-                            <div style={{ display: 'flex', gap: '8px', marginTop: '14px' }}>
+                            <div className="project-btn-row">
                               <a
                                 href={`?project=${slug}`}
                                 onClick={(e) => handleOpenCaseStudy(project, e)}
                                 className="pixel-btn pixel-btn--sm pixel-btn--ghost toggle-case-study"
-                                style={{ flex: 1, textAlign: 'center', paddingLeft: '4px', paddingRight: '4px' }}
                               >
                                 ▶ CASE STUDY
                               </a>
@@ -744,7 +743,6 @@ function App() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="pixel-btn pixel-btn--sm pixel-btn--yellow"
-                                style={{ flex: 1, textAlign: 'center', paddingLeft: '4px', paddingRight: '4px' }}
                               >
                                 ▶ VISIT SITE
                               </a>
