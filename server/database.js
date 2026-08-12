@@ -256,7 +256,7 @@ The core management and billing systems are in place, with ongoing work focused 
           title: "ORACLE-26",
           status: "RUNNING",
           description: "A football prediction engine built to argue with people about the 2026 World Cup.",
-          live_link: "https://vercel.com/saaads-projects-880883cb/wordcup-predictor-2026",
+          live_link: "https://wordcup-predictor-2026.vercel.app/",
           tags: JSON.stringify(["Python", "GitHub Actions", "mutmut"]),
           overview: `A football prediction engine built to argue with people about the 2026 World Cup.
 
